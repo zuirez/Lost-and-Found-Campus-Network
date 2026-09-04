@@ -7,6 +7,9 @@
 // Define application root directory
 define('APP_ROOT', __DIR__);
 
+// Load configuration
+require_once APP_ROOT . '/config/config.php';
+
 // Define base URL dynamically
 $base_url = rtrim(dirname($_SERVER['SCRIPT_NAME']), '\\/');
 define('BASE_URL', $base_url);
