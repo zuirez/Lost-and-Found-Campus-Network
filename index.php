@@ -59,6 +59,22 @@ switch ($page) {
             $posts->index();
         }
         break;
+    case 'profile':
+        require_once APP_ROOT . '/app/controllers/ProfileController.php';
+        $profile = new ProfileController();
+        $method = isset($url[1]) && !empty($url[1]) ? $url[1] : 'index';
+        $param  = isset($url[2]) ? $url[2] : null;
+
+        if (method_exists($profile, $method)) {
+            if ($param !== null) {
+                $profile->$method($param);
+            } else {
+                $profile->$method();
+            }
+        } else {
+            $profile->index();
+        }
+        break;
     case 'home':
     default:
         // We can route home to PostsController index if we want, or keep it separate.

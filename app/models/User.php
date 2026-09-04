@@ -91,4 +91,22 @@ class User {
             return false;
         }
     }
+
+    // Get a user by their ID
+    public function getUserById($id) {
+        $sql = "SELECT * FROM users WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    // Change user password
+    public function changePassword($id, $hashed_password) {
+        $sql = "UPDATE users SET password = :password WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':password', $hashed_password);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
 }

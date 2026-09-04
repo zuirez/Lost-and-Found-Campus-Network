@@ -34,7 +34,10 @@
 
             <div class="navbar-actions">
                 <?php if(isset($_SESSION['user_id'])) : ?>
-                    <span class="user-greeting" style="margin-right: 15px; font-weight: 500;">Hi, <?= htmlspecialchars($_SESSION['user_name']); ?></span>
+                    <a href="<?= BASE_URL ?>/profile" style="margin-right: 15px; font-weight: 600; color: var(--text-light); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s;" onmouseover="this.style.color='var(--primary-light)'" onmouseout="this.style.color='var(--text-light)'">
+                        <i class="ph-fill ph-user-circle" style="font-size: 1.3rem;"></i>
+                        <?= htmlspecialchars($_SESSION['user_name']); ?>
+                    </a>
                     <a href="<?= BASE_URL ?>/posts/create" class="btn btn-primary">
                         <i class="ph-bold ph-plus"></i> Post Item
                     </a>

@@ -68,4 +68,47 @@ class Post {
             return false;
         }
     }
+
+    // Get all posts by a specific user
+    public function getPostsByUserId($user_id) {
+        $sql = "SELECT posts.*, users.name, users.student_id
+                FROM posts
+                INNER JOIN users ON posts.user_id = users.id
+                WHERE posts.user_id = :user_id
+                ORDER BY posts.created_at DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':user_id', $user_id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    // Update a post
+    public function updatePost($data) {
+        $sql = "UPDATE posts SET type = :type, title = :title, description = :description, 
+                category = :category, location = :location";
+        if (!empty($data['image_path'])) {
+            $sql .= ", image_path = :image_path";
+        }
+        $sql .= " WHERE id = :id";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $data['id']);
+        $stmt->bindParam(':type', $data['type']);
+        $stmt->bindParam(':title', $data['title']);
+        $stmt->bindParam(':description', $data['description']);
+        $stmt->bindParam(':category', $data['category']);
+        $stmt->bindParam(':location', $data['location']);
+        if (!empty($data['image_path'])) {
+            $stmt->bindParam(':image_path', $data['image_path']);
+        }
+        return $stmt->execute();
+    }
+
+    // Delete a post
+    public function deletePost($id) {
+        $sql = "DELETE FROM posts WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
 }
