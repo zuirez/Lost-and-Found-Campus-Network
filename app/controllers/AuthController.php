@@ -122,15 +122,15 @@ class AuthController {
 
             // Init data
             $data = [
-                'email' => trim($_POST['email']),
-                'password' => trim($_POST['password']),
-                'email_err' => '',
+                'identifier' => trim($_POST['identifier'] ?? ''),
+                'password' => trim($_POST['password'] ?? ''),
+                'identifier_err' => '',
                 'password_err' => '',
             ];
 
-            // Validate Email
-            if (empty($data['email'])) {
-                $data['email_err'] = 'Please enter email';
+            // Validate Identifier
+            if (empty($data['identifier'])) {
+                $data['identifier_err'] = 'Please enter email or student ID';
             }
 
             // Validate Password
@@ -138,19 +138,16 @@ class AuthController {
                 $data['password_err'] = 'Please enter password';
             }
 
-            // Check for user/email
-            if ($this->userModel->findUserByEmail($data['email'])) {
-                // User found
-            } else {
-                // User not found
-                $data['email_err'] = 'No user found';
+            // Check for user
+            if (empty($data['identifier_err']) && !$this->userModel->findUserByEmailOrId($data['identifier'])) {
+                $data['identifier_err'] = 'No user found with that email or ID';
             }
 
             // Make sure errors are empty
-            if (empty($data['email_err']) && empty($data['password_err'])) {
+            if (empty($data['identifier_err']) && empty($data['password_err'])) {
                 // Validated
                 // Check and set logged in user
-                $loggedInUser = $this->userModel->login($data['email'], $data['password']);
+                $loggedInUser = $this->userModel->login($data['identifier'], $data['password']);
 
                 if ($loggedInUser) {
                     // Create Session
@@ -167,9 +164,9 @@ class AuthController {
         } else {
             // Init data for GET request
             $data = [
-                'email' => '',
+                'identifier' => '',
                 'password' => '',
-                'email_err' => '',
+                'identifier_err' => '',
                 'password_err' => '',
             ];
 

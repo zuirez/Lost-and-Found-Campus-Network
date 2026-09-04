@@ -20,13 +20,13 @@ require_once APP_ROOT . '/app/views/layouts/header.php';
 
         <form action="<?= BASE_URL ?>/login" method="POST" class="auth-form">
             <div class="form-group">
-                <label for="email">University Email</label>
+                <label for="identifier">Email or Student ID</label>
                 <div class="input-wrapper">
-                    <input type="email" id="email" name="email" placeholder="e.g. xx-xxxxx-x@student.aiub.edu" value="<?= htmlspecialchars($data['email'] ?? ''); ?>" required>
-                    <i class="ph ph-envelope-simple"></i>
+                    <input type="text" id="identifier" name="identifier" placeholder="e.g. xx-xxxxx-x or email" value="<?= htmlspecialchars($data['identifier'] ?? ''); ?>" required>
+                    <i class="ph ph-user"></i>
                 </div>
-                <?php if(!empty($data['email_err'])) : ?>
-                    <span class="invalid-feedback" style="color: var(--lost-color); font-size: 0.8rem;"><?= $data['email_err']; ?></span>
+                <?php if(!empty($data['identifier_err'])) : ?>
+                    <span class="invalid-feedback" style="color: var(--lost-color); font-size: 0.8rem;"><?= $data['identifier_err']; ?></span>
                 <?php endif; ?>
             </div>
 

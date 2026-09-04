@@ -27,11 +27,12 @@ class User {
         }
     }
 
-    // Login user
-    public function login($email, $password) {
-        $sql = "SELECT * FROM users WHERE email = :email";
+    // Login user (email or student_id)
+    public function login($identifier, $password) {
+        $sql = "SELECT * FROM users WHERE email = :email OR student_id = :student_id";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':email', $identifier);
+        $stmt->bindParam(':student_id', $identifier);
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_OBJ);
@@ -67,6 +68,21 @@ class User {
         $sql = "SELECT * FROM users WHERE student_id = :student_id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':student_id', $student_id);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Find user by email or student id
+    public function findUserByEmailOrId($identifier) {
+        $sql = "SELECT * FROM users WHERE email = :email OR student_id = :student_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':email', $identifier);
+        $stmt->bindParam(':student_id', $identifier);
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
