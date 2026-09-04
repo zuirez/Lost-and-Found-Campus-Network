@@ -58,8 +58,8 @@ require_once APP_ROOT . '/app/views/layouts/header.php';
                                 </div>
                                 <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $comment->user_id) : ?>
                                     <div style="display: flex; gap: 0.5rem;">
-                                        <a href="<?= BASE_URL ?>/posts/edit_comment/<?= $comment->id ?>" style="color: var(--text-muted); font-size: 0.85rem;"><i class="ph-bold ph-pencil-simple"></i> Edit</a>
-                                        <a href="<?= BASE_URL ?>/posts/delete_comment/<?= $comment->id ?>" onclick="return confirm('Are you sure you want to delete this comment?');" style="color: var(--lost-color); font-size: 0.85rem;"><i class="ph-bold ph-trash"></i> Delete</a>
+                                        <a href="javascript:void(0);" onclick="editComment(<?= $comment->id ?>, this.getAttribute('data-body'))" data-body="<?= htmlspecialchars($comment->body, ENT_QUOTES) ?>" style="color: var(--text-muted); font-size: 1.1rem;" title="Edit"><i class="ph-bold ph-pencil-simple"></i></a>
+                                        <a href="javascript:void(0);" onclick="confirmDelete(<?= $comment->id ?>)" style="color: var(--lost-color); font-size: 1.1rem;" title="Delete"><i class="ph-bold ph-trash"></i></a>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -87,5 +87,59 @@ require_once APP_ROOT . '/app/views/layouts/header.php';
 
     </div>
 </main>
+
+<script>
+function confirmDelete(id) {
+    Swal.fire({
+        title: 'Delete Comment?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'var(--lost-color)',
+        cancelButtonColor: 'var(--text-muted)',
+        background: 'var(--card-bg)',
+        color: 'var(--text-light)',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '<?= BASE_URL ?>/posts/delete_comment/' + id;
+        }
+    });
+}
+
+function editComment(id, currentText) {
+    Swal.fire({
+        title: 'Edit Comment',
+        input: 'textarea',
+        inputValue: currentText,
+        showCancelButton: true,
+        confirmButtonText: 'Save Changes',
+        confirmButtonColor: 'var(--primary-color)',
+        cancelButtonColor: 'var(--text-muted)',
+        background: 'var(--card-bg)',
+        color: 'var(--text-light)',
+        inputValidator: (value) => {
+            if (!value.trim()) {
+                return 'Comment cannot be empty!';
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '<?= BASE_URL ?>/posts/edit_comment/' + id;
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'body';
+            input.value = result.value;
+            
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>
 
 <?php require_once APP_ROOT . '/app/views/layouts/footer.php'; ?>
