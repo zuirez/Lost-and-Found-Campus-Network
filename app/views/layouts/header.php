@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="<?= BASE_URL ?>/public/css/style.css?v=<?= time() ?>">
 </head>
 <body>
@@ -32,12 +33,22 @@
             </div>
 
             <div class="navbar-actions">
-                <a href="<?= BASE_URL ?>/login" class="btn btn-outline">
-                    <i class="ph-bold ph-sign-in"></i> Login
-                </a>
-                <a href="<?= BASE_URL ?>/posts/create" class="btn btn-primary">
-                    <i class="ph-bold ph-plus"></i> Post Item
-                </a>
+                <?php if(isset($_SESSION['user_id'])) : ?>
+                    <span class="user-greeting" style="margin-right: 15px; font-weight: 500;">Hi, <?= htmlspecialchars($_SESSION['user_name']); ?></span>
+                    <a href="<?= BASE_URL ?>/posts/create" class="btn btn-primary">
+                        <i class="ph-bold ph-plus"></i> Post Item
+                    </a>
+                    <a href="<?= BASE_URL ?>/logout" class="btn btn-outline" style="margin-left: 10px;">
+                        <i class="ph-bold ph-sign-out"></i> Logout
+                    </a>
+                <?php else : ?>
+                    <a href="<?= BASE_URL ?>/login" class="btn btn-outline">
+                        <i class="ph-bold ph-sign-in"></i> Login
+                    </a>
+                    <a href="<?= BASE_URL ?>/posts/create" class="btn btn-primary">
+                        <i class="ph-bold ph-plus"></i> Post Item
+                    </a>
+                <?php endif; ?>
                 
                 <button class="mobile-toggle" aria-label="Toggle Menu">
                     <i class="ph-bold ph-list"></i>

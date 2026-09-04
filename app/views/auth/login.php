@@ -12,6 +12,7 @@ require_once APP_ROOT . '/app/views/layouts/header.php';
 
     <!-- Login Card -->
     <div class="auth-card">
+        <?php flash('register_success'); ?>
         <div class="auth-header">
             <h1>Welcome Back</h1>
             <p>Log in to your AIUB account to continue</p>
@@ -21,9 +22,12 @@ require_once APP_ROOT . '/app/views/layouts/header.php';
             <div class="form-group">
                 <label for="email">University Email</label>
                 <div class="input-wrapper">
-                    <input type="email" id="email" name="email" placeholder="e.g. xx-xxxxx-x@student.aiub.edu" required>
+                    <input type="email" id="email" name="email" placeholder="e.g. xx-xxxxx-x@student.aiub.edu" value="<?= htmlspecialchars($data['email'] ?? ''); ?>" required>
                     <i class="ph ph-envelope-simple"></i>
                 </div>
+                <?php if(!empty($data['email_err'])) : ?>
+                    <span class="invalid-feedback" style="color: var(--lost-color); font-size: 0.8rem;"><?= $data['email_err']; ?></span>
+                <?php endif; ?>
             </div>
 
             <div class="form-group">
@@ -32,6 +36,9 @@ require_once APP_ROOT . '/app/views/layouts/header.php';
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
                     <i class="ph ph-lock-key"></i>
                 </div>
+                <?php if(!empty($data['password_err'])) : ?>
+                    <span class="invalid-feedback" style="color: var(--lost-color); font-size: 0.8rem;"><?= $data['password_err']; ?></span>
+                <?php endif; ?>
             </div>
 
             <div class="auth-actions">
