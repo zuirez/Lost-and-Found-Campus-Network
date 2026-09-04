@@ -56,7 +56,8 @@ class PostsController {
 
             // Handle File Upload (Optional)
             if (!empty($_FILES['image']['name'])) {
-                $target_dir = APP_ROOT . "/public/uploads/" . $data['type'] . "/" . $_SESSION['user_id'] . "/";
+                $folder_name = $_SESSION['student_id'] ?? $_SESSION['user_id'];
+                $target_dir = APP_ROOT . "/public/uploads/" . $data['type'] . "/" . $folder_name . "/";
                 if (!file_exists($target_dir)) {
                     mkdir($target_dir, 0777, true);
                 }
@@ -69,7 +70,7 @@ class PostsController {
                 if (in_array($file_extension, $allowed_types)) {
                     if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
                         // Store relative path in DB
-                        $data['image_path'] = "/public/uploads/" . $data['type'] . "/" . $_SESSION['user_id'] . "/" . $new_filename;
+                        $data['image_path'] = "/public/uploads/" . $data['type'] . "/" . $folder_name . "/" . $new_filename;
                     }
                 } else {
                     $data['title_err'] = "Invalid image format. Only JPG, PNG, WEBP allowed.";

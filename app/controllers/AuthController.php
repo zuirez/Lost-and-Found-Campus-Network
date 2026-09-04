@@ -180,6 +180,7 @@ class AuthController {
         $_SESSION['user_email'] = $user->email;
         $_SESSION['user_name'] = $user->name;
         $_SESSION['user_role'] = $user->role;
+        $_SESSION['student_id'] = $user->student_id;
         header('location: ' . BASE_URL . '/');
     }
 
@@ -188,6 +189,7 @@ class AuthController {
         unset($_SESSION['user_email']);
         unset($_SESSION['user_name']);
         unset($_SESSION['user_role']);
+        unset($_SESSION['student_id']);
         session_destroy();
         header('location: ' . BASE_URL . '/login');
     }
