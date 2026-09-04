@@ -1,6 +1,5 @@
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<!-- Hero Section -->
 <section class="hero">
     <div class="hero-badge">
         <i class="ph-fill ph-sparkle"></i> AIUB Campus Lost & Found
@@ -12,7 +11,6 @@
         A unified community platform for AIUB students and faculty to reconnect lost belongings with their owners swiftly and securely.
     </p>
 
-    <!-- Search Bar -->
     <form action="" method="GET" class="search-wrapper">
         <input type="text" name="q" class="search-input" placeholder="Search by item name, location (e.g. Library, Annex 3), or category...">
         <button type="submit" class="search-btn">
@@ -20,7 +18,6 @@
         </button>
     </form>
 
-    <!-- Quick Stats / Filters -->
     <div class="quick-stats">
         <a href="#feed" class="stat-pill">
             <span class="stat-dot lost"></span> 12 Active Lost Items
@@ -34,7 +31,6 @@
     </div>
 </section>
 
-<!-- Feed Container -->
 <div class="container" id="feed">
     <div class="section-header">
         <div>
@@ -48,9 +44,7 @@
         </div>
     </div>
 
-    <!-- Cards Grid -->
     <div class="cards-grid">
-        <!-- Sample Item 1 (Lost) -->
         <div class="item-card">
             <div class="card-img-wrap">
                 <span class="badge badge-lost">Lost</span>
@@ -67,7 +61,6 @@
             </div>
         </div>
 
-        <!-- Sample Item 2 (Found) -->
         <div class="item-card">
             <div class="card-img-wrap">
                 <span class="badge badge-found">Found</span>
@@ -84,7 +77,6 @@
             </div>
         </div>
 
-        <!-- Sample Item 3 (Lost) -->
         <div class="item-card">
             <div class="card-img-wrap">
                 <span class="badge badge-lost">Lost</span>
@@ -101,7 +93,6 @@
             </div>
         </div>
 
-        <!-- Sample Item 4 (Found) -->
         <div class="item-card">
             <div class="card-img-wrap">
                 <span class="badge badge-found">Found</span>

@@ -1,21 +1,7 @@
-/**
- * ==============================================================================
- * Lost & Found Campus Network (AIUB)
- * Main Stylesheet Manifest (Modular CSS Architecture)
- * ==============================================================================
- */
-
-/* 1. Base Styles & Design Tokens */
 @import url('base/variables.css');
 @import url('base/global.css');
-
-/* 2. Reusable UI Components */
 @import url('components/buttons.css');
 @import url('components/cards.css');
-
-/* 3. Layout Styles */
 @import url('layouts/header.css');
 @import url('layouts/footer.css');
-
-/* 4. Page Specific Styles */
 @import url('pages/home.css');
