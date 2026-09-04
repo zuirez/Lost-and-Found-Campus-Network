@@ -52,15 +52,17 @@
         <?php else : ?>
             <?php foreach($data['posts'] as $post) : ?>
                 <div class="item-card" data-category="<?= htmlspecialchars($post->category) ?>">
-                    <div class="card-img-wrap">
-                        <span class="badge badge-<?= strtolower($post->type) ?>"><?= $post->type ?></span>
+                    <a href="<?= BASE_URL ?>/posts/show/<?= $post->id ?>" class="card-img-wrap" style="display: block;">
+                        <span class="badge badge-<?= strtolower($post->type) ?>" style="z-index: 10;"><?= $post->type ?></span>
                         
                         <?php if($post->image_path) : ?>
-                            <img src="<?= BASE_URL . $post->image_path ?>" alt="Item Image" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
+                            <img src="<?= BASE_URL . $post->image_path ?>" alt="Item Image" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
                         <?php else : ?>
-                            <i class="ph-thin ph-box card-img-placeholder"></i>
+                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                <i class="ph-thin ph-box card-img-placeholder" style="transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'"></i>
+                            </div>
                         <?php endif; ?>
-                    </div>
+                    </a>
                     <div class="card-body">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
                             <div class="card-category"><?= htmlspecialchars($post->category) ?></div>
@@ -77,14 +79,10 @@
 
                         <p class="card-desc"><?= htmlspecialchars(substr($post->description, 0, 80)) ?>...</p>
                         
-                        <div class="card-meta" style="margin-bottom: 1rem;">
+                        <div class="card-meta">
                             <span class="card-meta-item"><i class="ph ph-map-pin"></i> <?= htmlspecialchars($post->location) ?></span>
                             <span class="card-meta-item"><i class="ph ph-clock"></i> <?= date('M j', strtotime($post->created_at)) ?></span>
                         </div>
-
-                        <a href="<?= BASE_URL ?>/posts/show/<?= $post->id ?>" class="btn btn-outline" style="width: 100%; text-align: center; padding: 8px;">
-                            View Details <i class="ph-bold ph-arrow-right"></i>
-                        </a>
                     </div>
                 </div>
             <?php endforeach; ?>
