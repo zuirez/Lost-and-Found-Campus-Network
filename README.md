@@ -13,11 +13,13 @@ Built from scratch, it entirely avoids bloated CSS frameworks and operates on a 
 
 ## 🚀 Key Features
 
-* **Custom MVC Router**: Clean URLs (e.g., `/login` instead of `login.php`) managed by a robust front controller (`index.php`) and `.htaccess` rewrites.
+* **Custom MVC Router**: Clean URLs (e.g., `/login` or `/posts/create`) managed by a robust front controller (`index.php`) and `.htaccess` rewrites.
 * **Premium Glassmorphism UI/UX**: A highly modern, breathtaking visual interface featuring translucent blurred cards, glowing ambient backgrounds, smooth micro-animations, and vibrant color palettes.
 * **Modular CSS Architecture**: Highly maintainable CSS structured into distinct modules (`base`, `components`, `layouts`, `pages`) glued together by a single `style.css` manifest.
 * **Secure Aiven MySQL Database**: Enforces strict SSL/TLS verification through a secure PDO Singleton class.
-* **Student-Centric Auth**: Registration interfaces explicitly designed for university attributes (Student ID, `.edu` email domains).
+* **Student-Centric Auth**: Registration interfaces explicitly designed for university attributes (Student ID, `.edu` email domains). Includes session management and SweetAlert2 route protection.
+* **Dynamic Feed & Filtering**: Real-time rendering of active lost and found reports with instantaneous JavaScript-based category filtering.
+* **Interactive Post Details**: Dedicated views for individual reports featuring image uploads (organized by Student ID) and a threaded community comment system.
 
 ---
 
@@ -45,14 +47,23 @@ Lost-and-Found-Campus-Network/
 │   ├── config.php            # Environment & Database Credentials
 │   └── ca.pem                # SSL Certificate required by Aiven MySQL
 ├── app/
+│   ├── helpers/
+│   │   └── session_helper.php# Session management and Auth guards (SweetAlert)
 │   ├── models/               # Data layer and database connection logic
-│   │   └── Database.php      # PDO Singleton Wrapper enforcing TLS/SSL
-│   ├── controllers/          # Business logic & View orchestrators (Upcoming)
+│   │   ├── Database.php      # PDO Singleton Wrapper enforcing TLS/SSL
+│   │   ├── User.php          # User authentication and querying
+│   │   ├── Post.php          # Lost/Found posts logic
+│   │   └── Comment.php       # Comment thread logic
+│   ├── controllers/          # Business logic & View orchestrators
+│   │   ├── AuthController.php# Handles login, registration, and sessions
+│   │   └── PostsController.php # Handles feeds, post creation, and comments
 │   └── views/                # Presentation layer (HTML mixed with PHP)
 │       ├── auth/             # Authentication Views (login.php, register.php)
+│       ├── posts/            # Feed and single post views (index, create, show)
 │       ├── home/             # Main landing feed and search dashboard
 │       └── layouts/          # Reusable UI components (header.php, footer.php)
 └── public/
+    ├── uploads/              # User uploaded images (categorized by Student ID)
     └── css/                  # Custom CSS Design System
         ├── style.css         # Master Manifest (handles all @imports)
         ├── base/             # variables.css (Design Tokens), global.css
@@ -88,6 +99,10 @@ This project enforces secure database connections. You must configure Aiven prop
 3. Open `config/config.php` and paste your credentials into the respective `DB_` constants.
 4. **CRITICAL:** Download the `ca.pem` (CA Certificate) from the Aiven connection dashboard.
 5. Place the `ca.pem` file directly inside the `config/` directory.
+6. Run the database setup script to generate the necessary tables:
+   ```bash
+   php setup_db.php
+   ```
 
 ### 4. Running the Application
 Open your browser and navigate to:
