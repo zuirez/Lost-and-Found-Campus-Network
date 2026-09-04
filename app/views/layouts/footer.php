@@ -4,7 +4,7 @@
         <div class="footer-container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="/Lost-and-Found-Campus-Network/index.php" class="footer-logo">
+                    <a href="<?= BASE_URL ?>/" class="footer-logo">
                         <div class="brand-icon">
                             <i class="ph-bold ph-magnifying-glass"></i>
                         </div>
@@ -23,11 +23,11 @@
                 <div class="footer-col">
                     <h4 class="footer-col-title">Quick Links</h4>
                     <ul class="footer-links">
-                        <li><a href="/Lost-and-Found-Campus-Network/index.php"><i class="ph ph-caret-right"></i> Home Feed</a></li>
-                        <li><a href="/Lost-and-Found-Campus-Network/posts/lost"><i class="ph ph-caret-right"></i> Lost Items</a></li>
-                        <li><a href="/Lost-and-Found-Campus-Network/posts/found"><i class="ph ph-caret-right"></i> Found Items</a></li>
-                        <li><a href="/Lost-and-Found-Campus-Network/posts/create.php"><i class="ph ph-caret-right"></i> Post a Report</a></li>
-                        <li><a href="/Lost-and-Found-Campus-Network/login.php"><i class="ph ph-caret-right"></i> Student / Faculty Login</a></li>
+                        <li><a href="<?= BASE_URL ?>/"><i class="ph ph-caret-right"></i> Home Feed</a></li>
+                        <li><a href="<?= BASE_URL ?>/posts/lost"><i class="ph ph-caret-right"></i> Lost Items</a></li>
+                        <li><a href="<?= BASE_URL ?>/posts/found"><i class="ph ph-caret-right"></i> Found Items</a></li>
+                        <li><a href="<?= BASE_URL ?>/posts/create"><i class="ph ph-caret-right"></i> Post a Report</a></li>
+                        <li><a href="<?= BASE_URL ?>/login"><i class="ph ph-caret-right"></i> Student / Faculty Login</a></li>
                     </ul>
                 </div>
 

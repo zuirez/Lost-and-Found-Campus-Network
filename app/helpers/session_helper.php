@@ -39,3 +39,29 @@ function flash($name = '', $message = '', $type = 'success') {
         }
     }
 }
+
+// Ensure user is logged in
+function requireAuth() {
+    if (!isset($_SESSION['user_id'])) {
+        echo '<!DOCTYPE html><html><head><script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script></head><body>';
+        echo '<script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Authentication Required",
+                    text: "You must be logged in to access this page.",
+                    confirmButtonText: "Log In",
+                    confirmButtonColor: "var(--primary-color, #4361ee)",
+                    background: "var(--card-bg, #1e1e1e)",
+                    color: "var(--text-light, #f8f9fa)",
+                    backdrop: "rgba(0,0,0,0.6)",
+                    allowOutsideClick: false
+                }).then((result) => {
+                    window.location.href = "' . BASE_URL . '/login";
+                });
+            });
+        </script>';
+        echo '</body></html>';
+        exit();
+    }
+}

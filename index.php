@@ -43,8 +43,28 @@ switch ($page) {
         $auth = new AuthController();
         $auth->logout();
         break;
+    case 'posts':
+        require_once APP_ROOT . '/app/controllers/PostsController.php';
+        $posts = new PostsController();
+        $method = isset($url[1]) ? $url[1] : 'index';
+        $param = isset($url[2]) ? $url[2] : null;
+        
+        if (method_exists($posts, $method)) {
+            if ($param !== null) {
+                $posts->$method($param);
+            } else {
+                $posts->$method();
+            }
+        } else {
+            $posts->index();
+        }
+        break;
     case 'home':
     default:
-        require_once APP_ROOT . '/app/views/home/index.php';
+        // We can route home to PostsController index if we want, or keep it separate.
+        // Let's redirect home to /posts/lost for now or create a Feed method.
+        require_once APP_ROOT . '/app/controllers/PostsController.php';
+        $posts = new PostsController();
+        $posts->index();
         break;
 }
