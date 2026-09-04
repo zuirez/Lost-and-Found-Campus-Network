@@ -5,7 +5,7 @@ require_once APP_ROOT . '/app/views/layouts/header.php';
 
 <main class="main-content" style="padding: 2rem 5%; min-height: 80vh;">
     
-    <?php flash('comment_message'); ?>
+    <?php flash('post_message'); ?>
     
     <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
         
@@ -51,9 +51,17 @@ require_once APP_ROOT . '/app/views/layouts/header.php';
                 <?php else : ?>
                     <?php foreach($data['comments'] as $comment) : ?>
                         <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 1rem 1.5rem; border-radius: 8px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                                <strong style="color: var(--primary-light);"><?= htmlspecialchars($comment->name) ?></strong>
-                                <span style="color: var(--text-muted); font-size: 0.8rem;"><?= date('M j, g:i a', strtotime($comment->created_at)) ?></span>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; align-items: center;">
+                                <div>
+                                    <strong style="color: var(--primary-light);"><?= htmlspecialchars($comment->name) ?></strong>
+                                    <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 0.5rem;"><?= date('M j, g:i a', strtotime($comment->created_at)) ?></span>
+                                </div>
+                                <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $comment->user_id) : ?>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a href="<?= BASE_URL ?>/posts/edit_comment/<?= $comment->id ?>" style="color: var(--text-muted); font-size: 0.85rem;"><i class="ph-bold ph-pencil-simple"></i> Edit</a>
+                                        <a href="<?= BASE_URL ?>/posts/delete_comment/<?= $comment->id ?>" onclick="return confirm('Are you sure you want to delete this comment?');" style="color: var(--lost-color); font-size: 0.85rem;"><i class="ph-bold ph-trash"></i> Delete</a>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                             <div style="color: var(--text-light); line-height: 1.5;">
                                 <?= htmlspecialchars($comment->body) ?>

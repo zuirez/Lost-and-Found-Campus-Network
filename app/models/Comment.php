@@ -36,4 +36,42 @@ class Comment {
             return false;
         }
     }
+
+    // Get a single comment by ID
+    public function getCommentById($id) {
+        $sql = "SELECT * FROM comments WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    // Update a comment
+    public function updateComment($data) {
+        $sql = "UPDATE comments SET body = :body WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        
+        $stmt->bindParam(':id', $data['id']);
+        $stmt->bindParam(':body', $data['body']);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Delete a comment
+    public function deleteComment($id) {
+        $sql = "DELETE FROM comments WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -133,11 +133,78 @@ class PostsController {
 
             if (!empty($data['body'])) {
                 if ($this->commentModel->addComment($data)) {
-                    flash('comment_message', 'Comment added');
+                    flash('post_message', 'Comment added');
                 }
             }
             
             header('location: ' . BASE_URL . '/posts/show/' . $post_id);
         }
+    }
+
+    public function edit_comment($id) {
+        requireAuth();
+
+        $comment = $this->commentModel->getCommentById($id);
+
+        if (!$comment || $comment->user_id != $_SESSION['user_id']) {
+            header('location: ' . BASE_URL . '/posts');
+            exit();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+            $data = [
+                'id' => $id,
+                'post_id' => $comment->post_id,
+                'body' => trim($_POST['body']),
+                'body_err' => ''
+            ];
+
+            if (empty($data['body'])) {
+                $data['body_err'] = 'Comment cannot be empty';
+            }
+
+            if (empty($data['body_err'])) {
+                if ($this->commentModel->updateComment($data)) {
+                    flash('post_message', 'Comment updated');
+                    header('location: ' . BASE_URL . '/posts/show/' . $comment->post_id);
+                } else {
+                    die('Something went wrong');
+                }
+            } else {
+                require_once APP_ROOT . '/app/views/posts/edit_comment.php';
+            }
+        } else {
+            $data = [
+                'id' => $id,
+                'post_id' => $comment->post_id,
+                'body' => $comment->body,
+                'body_err' => ''
+            ];
+
+            require_once APP_ROOT . '/app/views/posts/edit_comment.php';
+        }
+    }
+
+    public function delete_comment($id) {
+        requireAuth();
+
+        $comment = $this->commentModel->getCommentById($id);
+
+        if (!$comment || $comment->user_id != $_SESSION['user_id']) {
+            header('location: ' . BASE_URL . '/posts');
+            exit();
+        }
+
+        $post_id = $comment->post_id;
+
+        if ($this->commentModel->deleteComment($id)) {
+            flash('post_message', 'Comment deleted');
+        } else {
+            die('Something went wrong');
+        }
+
+        header('location: ' . BASE_URL . '/posts/show/' . $post_id);
     }
 }
