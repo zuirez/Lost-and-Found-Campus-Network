@@ -33,12 +33,25 @@
         </div>
     </div>
 
-    <div class="cards-grid">
+    <div class="filter-bar" style="display: flex; gap: 1rem; margin-bottom: 2rem; align-items: center;">
+        <strong><i class="ph-bold ph-funnel"></i> Filter by Category:</strong>
+        <select id="category-filter" style="padding: 8px 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: var(--text-light); border-radius: 6px;">
+            <option value="all">All Categories</option>
+            <option value="Electronics">Electronics / Gadgets</option>
+            <option value="ID Card">ID Card / Documents</option>
+            <option value="Wallet">Wallet / Bag</option>
+            <option value="Study Materials">Study Materials / Books</option>
+            <option value="Keys">Keys / Accessories</option>
+            <option value="Others">Others</option>
+        </select>
+    </div>
+
+    <div class="cards-grid" id="posts-grid">
         <?php if(empty($data['posts'])) : ?>
             <p style="color: var(--text-muted); grid-column: 1 / -1; text-align: center; padding: 3rem;">No items found in this category.</p>
         <?php else : ?>
             <?php foreach($data['posts'] as $post) : ?>
-                <div class="item-card">
+                <div class="item-card" data-category="<?= htmlspecialchars($post->category) ?>">
                     <div class="card-img-wrap">
                         <span class="badge badge-<?= strtolower($post->type) ?>"><?= $post->type ?></span>
                         
@@ -49,18 +62,59 @@
                         <?php endif; ?>
                     </div>
                     <div class="card-body">
-                        <div class="card-category"><?= htmlspecialchars($post->category) ?></div>
-                        <a href="<?= BASE_URL ?>/posts/show/<?= $post->id ?>" class="card-title"><?= htmlspecialchars($post->title) ?></a>
-                        <p class="card-desc"><?= htmlspecialchars(substr($post->description, 0, 80)) ?>...</p>
-                        <div class="card-meta">
-                            <span class="card-meta-item"><i class="ph ph-map-pin"></i> <?= htmlspecialchars($post->location) ?></span>
-                            <span class="card-meta-item"><i class="ph ph-clock"></i> <?= date('M j, g:i a', strtotime($post->created_at)) ?></span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                            <div class="card-category"><?= htmlspecialchars($post->category) ?></div>
+                            <span style="font-size: 0.75rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: var(--text-muted);">
+                                <?= htmlspecialchars($post->status) ?>
+                            </span>
                         </div>
+                        
+                        <a href="<?= BASE_URL ?>/posts/show/<?= $post->id ?>" class="card-title"><?= htmlspecialchars($post->title) ?></a>
+                        
+                        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                            <i class="ph-fill ph-user"></i> <?= htmlspecialchars($post->name) ?>
+                        </div>
+
+                        <p class="card-desc"><?= htmlspecialchars(substr($post->description, 0, 80)) ?>...</p>
+                        
+                        <div class="card-meta" style="margin-bottom: 1rem;">
+                            <span class="card-meta-item"><i class="ph ph-map-pin"></i> <?= htmlspecialchars($post->location) ?></span>
+                            <span class="card-meta-item"><i class="ph ph-clock"></i> <?= date('M j', strtotime($post->created_at)) ?></span>
+                        </div>
+
+                        <a href="<?= BASE_URL ?>/posts/show/<?= $post->id ?>" class="btn btn-outline" style="width: 100%; text-align: center; padding: 8px;">
+                            View Details <i class="ph-bold ph-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filter = document.getElementById('category-filter');
+    const cards = document.querySelectorAll('.item-card');
+
+    if(filter) {
+        filter.addEventListener('change', function() {
+            const selected = this.value;
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                if(selected === 'all' || card.getAttribute('data-category') === selected) {
+                    card.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Handle empty state manually if needed, but keeping it simple for now.
+        });
+    }
+});
+</script>
 
 <?php require_once APP_ROOT . '/app/views/layouts/footer.php'; ?>
