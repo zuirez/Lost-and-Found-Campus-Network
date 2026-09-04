@@ -13,9 +13,13 @@ $posts = $data['posts'];
     <!-- Profile Header -->
     <div style="max-width: 900px; margin: 0 auto;">
         <div class="auth-card" style="padding: 2rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
-            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: #fff; flex-shrink: 0;">
-                <i class="ph-fill ph-user"></i>
-            </div>
+            <?php if(!empty($user->profile_picture)) : ?>
+                <img src="<?= BASE_URL . $user->profile_picture ?>" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color); flex-shrink: 0;">
+            <?php else : ?>
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: #fff; flex-shrink: 0;">
+                    <i class="ph-fill ph-user"></i>
+                </div>
+            <?php endif; ?>
             <div style="flex: 1;">
                 <h1 style="font-size: 1.6rem; margin: 0 0 0.2rem;"><?= htmlspecialchars($user->name) ?></h1>
                 <p style="color: var(--text-muted); margin: 0; font-size: 0.9rem;">
@@ -99,6 +103,28 @@ $posts = $data['posts'];
 
         <!-- Tab: Account Info -->
         <?php elseif($activeTab === 'info') : ?>
+            <!-- Photo upload form -->
+            <div class="auth-card" style="max-width: 100%; padding: 2rem; margin-bottom: 1.5rem;">
+                <h3 style="margin-bottom: 1.25rem; font-size: 1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Profile Photo</h3>
+                <div style="display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
+                    <div style="position: relative; width: 90px; height: 90px; flex-shrink: 0;">
+                        <?php if(!empty($user->profile_picture)) : ?>
+                            <img src="<?= BASE_URL . $user->profile_picture ?>" id="profile-preview-img" alt="Profile" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color);">
+                        <?php else : ?>
+                            <div id="profile-preview-placeholder" style="width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; color: #fff;">
+                                <i class="ph-fill ph-user"></i>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <form action="<?= BASE_URL ?>/profile/update_photo" method="POST" enctype="multipart/form-data">
+                        <input type="file" id="profile_picture_upload" name="profile_picture" accept="image/*" style="display:none;" onchange="previewProfilePhoto(this); this.form.submit();">
+                        <label for="profile_picture_upload" class="btn btn-outline" style="cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <i class="ph-bold ph-camera"></i> Change Photo
+                        </label>
+                        <p style="color: var(--text-muted); font-size: 0.8rem; margin: 0;">JPG, PNG, WEBP up to a few MB. Uploading immediately saves.</p>
+                    </form>
+                </div>
+            </div>
             <div class="auth-card" style="max-width: 100%; padding: 2rem;">
                 <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Account Information</h3>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
@@ -205,6 +231,26 @@ function confirmDeletePost(id, title) {
             window.location.href = '<?= BASE_URL ?>/profile/delete_post/' + id;
         }
     });
+}
+
+function previewProfilePhoto(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const existing = document.getElementById('profile-preview-img');
+            const placeholder = document.getElementById('profile-preview-placeholder');
+            if (existing) {
+                existing.src = e.target.result;
+            } else if (placeholder) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.id = 'profile-preview-img';
+                img.style.cssText = 'width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid var(--primary-color);';
+                placeholder.replaceWith(img);
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
 }
 
 // Client-side password match validation

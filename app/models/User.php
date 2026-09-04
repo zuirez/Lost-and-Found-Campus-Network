@@ -9,7 +9,7 @@ class User {
 
     // Register user
     public function register($data) {
-        $sql = "INSERT INTO users (name, student_id, email, password, role) VALUES (:name, :student_id, :email, :password, :role)";
+        $sql = "INSERT INTO users (name, student_id, email, password, role, profile_picture) VALUES (:name, :student_id, :email, :password, :role, :profile_picture)";
         $stmt = $this->db->prepare($sql);
         
         // Bind values
@@ -18,6 +18,7 @@ class User {
         $stmt->bindParam(':email', $data['email']);
         $stmt->bindParam(':password', $data['password']);
         $stmt->bindParam(':role', $data['role']);
+        $stmt->bindParam(':profile_picture', $data['profile_picture']);
 
         // Execute
         if ($stmt->execute()) {
@@ -106,6 +107,15 @@ class User {
         $sql = "UPDATE users SET password = :password WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':password', $hashed_password);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
+    // Update profile picture
+    public function updateProfilePicture($id, $path) {
+        $sql = "UPDATE users SET profile_picture = :path WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':path', $path);
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }

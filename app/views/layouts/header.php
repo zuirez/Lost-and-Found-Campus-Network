@@ -35,7 +35,11 @@
             <div class="navbar-actions">
                 <?php if(isset($_SESSION['user_id'])) : ?>
                     <a href="<?= BASE_URL ?>/profile" style="margin-right: 15px; font-weight: 600; color: var(--text-light); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s;" onmouseover="this.style.color='var(--primary-light)'" onmouseout="this.style.color='var(--text-light)'">
-                        <i class="ph-fill ph-user-circle" style="font-size: 1.3rem;"></i>
+                        <?php if(!empty($_SESSION['profile_picture'])) : ?>
+                            <img src="<?= BASE_URL . $_SESSION['profile_picture'] ?>" alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color);">
+                        <?php else : ?>
+                            <i class="ph-fill ph-user-circle" style="font-size: 1.3rem;"></i>
+                        <?php endif; ?>
                         <?= htmlspecialchars($_SESSION['user_name']); ?>
                     </a>
                     <a href="<?= BASE_URL ?>/posts/create" class="btn btn-primary">

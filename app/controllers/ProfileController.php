@@ -174,4 +174,40 @@ class ProfileController {
 
         header('location: ' . BASE_URL . '/profile?tab=posts');
     }
+
+    // Update profile picture
+    public function update_photo() {
+        requireAuth();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_FILES['profile_picture']['name'])) {
+            $student_folder = $_SESSION['student_id'] ?? $_SESSION['user_id'];
+            $upload_dir = APP_ROOT . '/public/uploads/profile/' . $student_folder . '/';
+            if (!file_exists($upload_dir)) { mkdir($upload_dir, 0777, true); }
+
+            $ext = strtolower(pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION));
+            $filename = uniqid('avatar_') . '.' . $ext;
+
+            if (in_array($ext, ['jpg','jpeg','png','webp','gif'])) {
+                if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $upload_dir . $filename)) {
+                    $new_path = '/public/uploads/profile/' . $student_folder . '/' . $filename;
+
+                    // Delete old photo from disk
+                    $user = $this->userModel->getUserById($_SESSION['user_id']);
+                    if ($user->profile_picture && file_exists(APP_ROOT . $user->profile_picture)) {
+                        unlink(APP_ROOT . $user->profile_picture);
+                    }
+
+                    $this->userModel->updateProfilePicture($_SESSION['user_id'], $new_path);
+                    $_SESSION['profile_picture'] = $new_path;
+                    flash('profile_message', 'Profile photo updated!', 'success');
+                } else {
+                    flash('profile_message', 'Upload failed. Please try again.', 'error');
+                }
+            } else {
+                flash('profile_message', 'Invalid file type. Use JPG, PNG, or WEBP.', 'error');
+            }
+        }
+
+        header('location: ' . BASE_URL . '/profile?tab=info');
+    }
 }

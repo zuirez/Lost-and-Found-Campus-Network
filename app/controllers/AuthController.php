@@ -23,7 +23,8 @@ class AuthController {
                 'email' => trim($_POST['email']),
                 'password' => trim($_POST['password']),
                 'confirm_password' => trim($_POST['confirm_password']),
-                'role' => 'student', // Default role
+                'role' => 'student',
+                'profile_picture' => null,
                 'name_err' => '',
                 'student_id_err' => '',
                 'email_err' => '',
@@ -78,6 +79,20 @@ class AuthController {
                 
                 // Hash Password
                 $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+
+                // Handle optional profile picture upload
+                if (!empty($_FILES['profile_picture']['name'])) {
+                    $student_folder = $data['student_id'];
+                    $upload_dir = APP_ROOT . '/public/uploads/profile/' . $student_folder . '/';
+                    if (!file_exists($upload_dir)) { mkdir($upload_dir, 0777, true); }
+                    $ext = strtolower(pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION));
+                    $filename = uniqid('avatar_') . '.' . $ext;
+                    if (in_array($ext, ['jpg','jpeg','png','webp','gif'])) {
+                        if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $upload_dir . $filename)) {
+                            $data['profile_picture'] = '/public/uploads/profile/' . $student_folder . '/' . $filename;
+                        }
+                    }
+                }
 
                 // Register User
                 if ($this->userModel->register($data)) {
@@ -181,6 +196,7 @@ class AuthController {
         $_SESSION['user_name'] = $user->name;
         $_SESSION['user_role'] = $user->role;
         $_SESSION['student_id'] = $user->student_id;
+        $_SESSION['profile_picture'] = $user->profile_picture ?? null;
         header('location: ' . BASE_URL . '/');
     }
 
@@ -190,6 +206,7 @@ class AuthController {
         unset($_SESSION['user_name']);
         unset($_SESSION['user_role']);
         unset($_SESSION['student_id']);
+        unset($_SESSION['profile_picture']);
         session_destroy();
         header('location: ' . BASE_URL . '/login');
     }
