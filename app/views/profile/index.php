@@ -6,12 +6,12 @@ $user = $data['user'];
 $posts = $data['posts'];
 ?>
 
-<main class="main-content" style="padding: 2rem 5%; min-height: 80vh;">
+<main class="main-content" style="padding: 2rem 1.5rem; min-height: 80vh;">
 
     <?php flash('profile_message'); ?>
 
     <!-- Profile Header -->
-    <div style="max-width: 900px; margin: 0 auto;">
+    <div style="max-width: 1200px; margin: 0 auto;">
         <div class="auth-card" style="padding: 2rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;">
             <?php if(!empty($user->profile_picture)) : ?>
                 <img src="<?= BASE_URL . $user->profile_picture ?>" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color); flex-shrink: 0;">
@@ -22,7 +22,7 @@ $posts = $data['posts'];
             <?php endif; ?>
             <div style="flex: 1;">
                 <h1 style="font-size: 1.6rem; margin: 0 0 0.2rem;"><?= htmlspecialchars($user->name) ?></h1>
-                <p style="color: var(--text-muted); margin: 0; font-size: 0.9rem;">
+                <p style="color: var(--text-muted); margin: 0 0 0.5rem; font-size: 0.9rem;">
                     <i class="ph ph-identification-card"></i> <?= htmlspecialchars($user->student_id) ?>
                     &nbsp;&bull;&nbsp;
                     <i class="ph ph-envelope"></i> <?= htmlspecialchars($user->email) ?>
@@ -31,9 +31,9 @@ $posts = $data['posts'];
                         <i class="ph ph-shield-check"></i> <?= htmlspecialchars($user->role) ?>
                     </span>
                 </p>
-            </div>
-            <div style="color: var(--text-muted); font-size: 0.85rem; text-align: right;">
-                <i class="ph ph-calendar-blank"></i> Member since <?= date('M Y', strtotime($user->created_at)) ?>
+                <div style="color: var(--text-muted); font-size: 0.82rem;">
+                    <i class="ph ph-calendar-blank"></i> Member since <?= date('M Y', strtotime($user->created_at)) ?>
+                </div>
             </div>
         </div>
 

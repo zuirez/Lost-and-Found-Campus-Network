@@ -1,136 +1,214 @@
 <div align="center">
-  <h1>AIUB Lost & Found Campus Network 🔍✨</h1>
-  <p><i>A unified community platform for AIUB students and faculty to reconnect lost belongings with their owners swiftly and securely.</i></p>
+
+<img src="https://img.shields.io/badge/AIUB-Lost%20%26%20Found-4361ee?style=for-the-badge&logo=mapbox&logoColor=white" alt="AIUB Lost & Found">
+
+# 🔍 AIUB Lost & Found Campus Network
+
+**An unofficial, community-driven platform for AIUB students and faculty to reconnect lost belongings with their owners — swiftly and securely.**
+
+[![PHP](https://img.shields.io/badge/PHP-8.0+-777BB4?style=flat-square&logo=php&logoColor=white)](https://php.net)
+[![MySQL](https://img.shields.io/badge/MySQL-Aiven-4479A1?style=flat-square&logo=mysql&logoColor=white)](https://aiven.io)
+[![Apache](https://img.shields.io/badge/Apache-XAMPP-D22128?style=flat-square&logo=apache&logoColor=white)](https://apachefriends.org)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+
 </div>
 
 ---
 
 ## 📖 Overview
 
-The **AIUB Lost & Found Campus Network** is an unofficial platform dedicated to the American International University-Bangladesh (AIUB) community. Thousands of students commute to the campus daily, and personal items are frequently misplaced. This web application provides a seamless, aesthetically pleasing, and highly secure centralized hub to report lost items and claim found items. 
+The **AIUB Lost & Found Campus Network** is an unofficial platform built for the American International University–Bangladesh (AIUB) community. Thousands of students commute daily and personal items are frequently misplaced. This application provides a sleek, centralized hub to report lost items, claim found ones, and coordinate directly through threaded community comments.
 
-Built from scratch, it entirely avoids bloated CSS frameworks and operates on a lightweight, custom **MVC (Model-View-Controller) Architecture** using raw PHP.
+Built entirely from scratch — no CSS frameworks, no boilerplate — using a custom **MVC (Model-View-Controller) architecture** in raw PHP with a premium glassmorphism dark UI.
 
-## 🚀 Key Features
+---
 
-* **Custom MVC Router**: Clean URLs (e.g., `/login` or `/posts/create`) managed by a robust front controller (`index.php`) and `.htaccess` rewrites.
-* **Premium Glassmorphism UI/UX**: A highly modern, breathtaking visual interface featuring translucent blurred cards, glowing ambient backgrounds, smooth micro-animations, and vibrant color palettes.
-* **Modular CSS Architecture**: Highly maintainable CSS structured into distinct modules (`base`, `components`, `layouts`, `pages`) glued together by a single `style.css` manifest.
-* **Secure Aiven MySQL Database**: Enforces strict SSL/TLS verification through a secure PDO Singleton class.
-* **Student-Centric Auth**: Registration interfaces explicitly designed for university attributes (Student ID, `.edu` email domains). Includes session management and SweetAlert2 route protection.
-* **Dynamic Feed & Filtering**: Real-time rendering of active lost and found reports with instantaneous JavaScript-based category filtering.
-* **Interactive Post Details**: Dedicated views for individual reports featuring image uploads (organized by Student ID) and a threaded community comment system.
+## ✨ Feature Highlights
+
+### 🔐 Authentication & User System
+- Register with **Full Name**, **Student ID**, **University Email**, and an optional **profile photo**
+- Login using **Email or Student ID** + password
+- SweetAlert2-powered auth guards — unauthenticated users are redirected gracefully
+- Role-based accounts: `student`, `admin`, `security`
+
+### 📋 Lost & Found Posts
+- Create **Lost** or **Found** reports with title, category, location, and description
+- **Optional image uploads** stored in organized directories: `uploads/Lost/{student_id}/` or `uploads/Found/{student_id}/`
+- **6 categories**: Electronics, ID Card, Wallet, Study Materials, Keys, Others
+- Live **JavaScript category filter** on all feeds without page reloads
+- Clicking post images navigates to the full post details page
+
+### 💬 Comments & Discussion
+- Threaded comment section on every post detail page
+- **Edit** and **Delete** own comments via SweetAlert2 inline dialogs (no page navigation)
+- Ownership enforced server-side on every action
+
+### 👤 User Profile Dashboard
+- Tabbed profile page with **3 sections**:
+  - **My Posts** — view, edit, and delete your own reports with SweetAlert2 confirmation
+  - **Account Info** — view full user details + change profile photo (instant upload)
+  - **Change Password** — secure update with current password verification
+- Profile photo stored at `uploads/profile/{student_id}/filename`
+- Avatar displayed in the **navbar** next to the user's name
+
+### 🎨 Premium UI/UX
+- Full **glassmorphism dark mode** design
+- Smooth micro-animations and hover effects throughout
+- **Phosphor Icons** and **Google Fonts (Inter)** for premium typography
+- Responsive layout aligned to a `1200px` content container matching the navbar
+- **SweetAlert2** for every popup, confirmation, and notification
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Layer | Technologies Used |
+| Layer | Technologies |
 | :--- | :--- |
-| **Frontend UI** | HTML5, Vanilla CSS3 (Custom Variables, Flexbox, CSS Grid) |
-| **Icons & Typography**| Phosphor Icons (CDN), Google Fonts (Inter) |
-| **Backend Logic** | Raw PHP (8.0+) |
-| **Architecture** | Custom MVC (Model-View-Controller) Pattern |
-| **Database** | MySQL (Hosted securely on Aiven Free Tier) |
-| **Server** | Apache (XAMPP/WAMP) with `mod_rewrite` enabled |
+| **Frontend** | HTML5, Vanilla CSS3 (Grid, Flexbox, Custom Properties) |
+| **Icons & Fonts** | Phosphor Icons, Google Fonts (Inter) |
+| **Alerts & Dialogs** | SweetAlert2 |
+| **Backend** | Raw PHP 8.0+ |
+| **Architecture** | Custom MVC (Front Controller Pattern) |
+| **Database** | MySQL hosted on Aiven Cloud (SSL/TLS enforced) |
+| **Server** | Apache via XAMPP with `mod_rewrite` |
 
 ---
 
-## 📁 Detailed Directory Structure
+## 📁 Project Structure
 
 ```text
 Lost-and-Found-Campus-Network/
-├── .htaccess                 # URL rewriting engine for clean MVC routing
-├── index.php                 # Front Controller / App Entry Point
-├── README.md                 # Project Documentation
-├── config/                   
-│   ├── config.php            # Environment & Database Credentials
-│   └── ca.pem                # SSL Certificate required by Aiven MySQL
+├── .htaccess                    # Clean URL rewriting rules
+├── index.php                    # Front Controller & Router
+├── setup_db.php                 # Database schema installer
+├── config/
+│   ├── config.example.php       # Template for local config
+│   ├── config.php               # DB credentials (gitignored)
+│   └── ca.pem                   # Aiven SSL certificate (gitignored)
 ├── app/
 │   ├── helpers/
-│   │   └── session_helper.php# Session management and Auth guards (SweetAlert)
-│   ├── models/               # Data layer and database connection logic
-│   │   ├── Database.php      # PDO Singleton Wrapper enforcing TLS/SSL
-│   │   ├── User.php          # User authentication and querying
-│   │   ├── Post.php          # Lost/Found posts logic
-│   │   └── Comment.php       # Comment thread logic
-│   ├── controllers/          # Business logic & View orchestrators
-│   │   ├── AuthController.php# Handles login, registration, and sessions
-│   │   └── PostsController.php # Handles feeds, post creation, and comments
-│   └── views/                # Presentation layer (HTML mixed with PHP)
-│       ├── auth/             # Authentication Views (login.php, register.php)
-│       ├── posts/            # Feed and single post views (index, create, show)
-│       ├── home/             # Main landing feed and search dashboard
-│       └── layouts/          # Reusable UI components (header.php, footer.php)
+│   │   └── session_helper.php   # flash(), requireAuth(), SweetAlert guards
+│   ├── models/
+│   │   ├── Database.php         # PDO Singleton with SSL/TLS enforcement
+│   │   ├── User.php             # Register, login, profile, password management
+│   │   ├── Post.php             # CRUD for lost/found posts
+│   │   └── Comment.php          # CRUD for comments
+│   ├── controllers/
+│   │   ├── AuthController.php   # Login, register, logout, session creation
+│   │   ├── PostsController.php  # Feed, post creation, comments
+│   │   └── ProfileController.php# Profile dashboard, edit/delete posts, photo upload
+│   └── views/
+│       ├── layouts/             # header.php, footer.php (shared across all pages)
+│       ├── auth/                # login.php, register.php
+│       ├── posts/               # index.php, create.php, show.php
+│       └── profile/             # index.php (tabbed), edit_post.php
 └── public/
-    ├── uploads/              # User uploaded images (categorized by Student ID)
-    └── css/                  # Custom CSS Design System
-        ├── style.css         # Master Manifest (handles all @imports)
-        ├── base/             # variables.css (Design Tokens), global.css
-        ├── components/       # buttons.css, cards.css (Reusable UI blocks)
-        ├── layouts/          # header.css, footer.css (Structural styling)
-        └── pages/            # home.css, auth.css (View-specific scopes)
+    ├── uploads/                 # All user uploads (gitignored)
+    │   ├── Lost/{student_id}/   # Lost item images
+    │   ├── Found/{student_id}/  # Found item images
+    │   └── profile/{student_id}/# Profile pictures
+    └── css/
+        ├── style.css            # Master @import manifest
+        ├── base/                # variables.css, global.css
+        ├── components/          # buttons.css, cards.css
+        ├── layouts/             # header.css, footer.css
+        └── pages/               # home.css, auth.css
 ```
 
 ---
 
-## ⚙️ Setup & Installation Guide
+## ⚙️ Setup & Installation
 
-To run this project locally, follow these steps meticulously:
+### Prerequisites
+- **PHP 8.0+**
+- **XAMPP / WAMP** (Apache with `mod_rewrite` enabled)
+- **Git**
+- An **Aiven Cloud** account (free tier) for MySQL
 
-### 1. Prerequisites
-* **PHP 8.0 or higher** installed.
-* **XAMPP / WAMP** (or any local Apache environment).
-* **Git** installed on your machine.
-* An **Aiven Cloud** account for the MySQL database.
+### Step 1 — Clone the Repository
+```bash
+cd C:/xampp/htdocs
+git clone https://github.com/zuirez/Lost-and-Found-Campus-Network.git
+cd Lost-and-Found-Campus-Network
+```
 
-### 2. Local Environment Setup
-1. Clone the repository into your Apache `htdocs` (or `www`) folder:
+### Step 2 — Configure the Database
+1. Log into [Aiven Console](https://console.aiven.io) and provision a free MySQL instance.
+2. Copy the connection details (**Host**, **Port**, **User**, **Password**, **Database name**).
+3. Copy the config template and fill in your credentials:
    ```bash
-   git clone https://github.com/zuirez/Lost-and-Found-Campus-Network.git
+   cp config/config.example.php config/config.php
    ```
-2. Start the **Apache** service from your XAMPP Control Panel.
-3. Ensure the Apache module `mod_rewrite` is enabled (it usually is by default in XAMPP) to allow the `.htaccess` file to function.
+4. Download the **CA Certificate** (`ca.pem`) from the Aiven connection dashboard and place it in `config/ca.pem`.
 
-### 3. Database Configuration (Aiven MySQL)
-This project enforces secure database connections. You must configure Aiven properly:
-1. Log into your Aiven Console and provision a **Free MySQL** instance.
-2. Navigate to your database overview and copy the **Host**, **Port**, **User**, and **Password**.
-3. Open `config/config.php` and paste your credentials into the respective `DB_` constants.
-4. **CRITICAL:** Download the `ca.pem` (CA Certificate) from the Aiven connection dashboard.
-5. Place the `ca.pem` file directly inside the `config/` directory.
-6. Run the database setup script to generate the necessary tables:
-   ```bash
-   php setup_db.php
-   ```
+### Step 3 — Run the DB Schema Installer
+```bash
+php setup_db.php
+```
+This creates the `users`, `posts`, and `comments` tables with the full schema.
 
-### 4. Running the Application
-Open your browser and navigate to:
-```text
+### Step 4 — Start Apache & Open the App
+Start Apache from the XAMPP Control Panel, then navigate to:
+```
 http://localhost/Lost-and-Found-Campus-Network/
 ```
-The application dynamically calculates the `BASE_URL`, so it will function beautifully no matter what you name the parent folder.
+
+> The application dynamically detects `BASE_URL` — it works regardless of the folder name.
 
 ---
 
-## 🎨 The CSS Design System Explained
+## 🎨 CSS Design System
 
-To maintain a premium aesthetic without the bloat of frameworks like Tailwind or Bootstrap, this project relies on a bespoke CSS architecture:
+The entire UI is built on a bespoke CSS architecture with no external framework dependency:
 
-1. **Design Tokens (`variables.css`)**: Every color, shadow, border-radius, and spacing unit is stored as a CSS custom property (e.g., `--primary-color`, `--spacing-xl`). This allows for instant theme-wide adjustments.
-2. **Component Isolation**: If a button looks broken, you only check `buttons.css`. If a card is misaligned, you only check `cards.css`.
-3. **Cache Busting**: The `style.css` file includes dynamic PHP timestamps on the frontend to ensure you never get stuck viewing old CSS caches during development.
+| File | Purpose |
+| :--- | :--- |
+| `variables.css` | Design tokens — colors, spacing, shadows, radii as CSS custom properties |
+| `global.css` | Reset, base typography, scroll behavior |
+| `buttons.css` | All button variants (`.btn-primary`, `.btn-outline`) |
+| `cards.css` | Item card grid, badge styles, card metadata |
+| `header.css` | Sticky navbar, mobile toggle, brand styles |
+| `footer.css` | Multi-column footer grid |
+| `auth.css` | Glassmorphism auth cards, input wrappers with icons |
+| `home.css` | Hero section, quick stats, section headers |
+
+Cache busting is handled by appending `?v=<?= time() ?>` to the stylesheet link in `header.php`.
+
+---
+
+## 🗺️ URL Route Map
+
+| Route | Method | Controller | Action |
+| :--- | :---: | :--- | :--- |
+| `/` | GET | PostsController | Show all posts feed |
+| `/posts/lost` | GET | PostsController | Filter Lost posts |
+| `/posts/found` | GET | PostsController | Filter Found posts |
+| `/posts/create` | GET/POST | PostsController | Create new post |
+| `/posts/show/{id}` | GET | PostsController | Post detail + comments |
+| `/posts/comment/{id}` | POST | PostsController | Add a comment |
+| `/posts/edit_comment/{id}` | POST | PostsController | Edit a comment |
+| `/posts/delete_comment/{id}` | GET | PostsController | Delete a comment |
+| `/login` | GET/POST | AuthController | Login form & processing |
+| `/register` | GET/POST | AuthController | Register form & processing |
+| `/logout` | GET | AuthController | Destroy session |
+| `/profile` | GET | ProfileController | Profile dashboard (tabbed) |
+| `/profile/change_password` | POST | ProfileController | Update password |
+| `/profile/edit_post/{id}` | GET/POST | ProfileController | Edit own post |
+| `/profile/delete_post/{id}` | GET | ProfileController | Delete own post |
+| `/profile/update_photo` | POST | ProfileController | Change profile picture |
 
 ---
 
-## 🤝 Contribution Guidelines
+## 🤝 Contributing
 
-This is a community-driven project. If you are an AIUB student or developer looking to improve this platform:
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git push origin feature/AmazingFeature`).
-5. Open a Pull Request.
+This is a community-driven project. AIUB students and developers are welcome to contribute:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/YourFeature`
+3. Commit your changes: `git commit -m 'Add YourFeature'`
+4. Push to the branch: `git push origin feature/YourFeature`
+5. Open a Pull Request
 
 ---
-*Disclaimer: This is an independent, student-led initiative and is not officially affiliated with the American International University-Bangladesh administration.*
+
+
