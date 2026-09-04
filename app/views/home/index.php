@@ -120,11 +120,4 @@
     </div>
 </div>
 
-<footer class="app-footer">
-    <div class="container" style="padding: 0;">
-        <p><strong>Lost & Found Campus Network</strong> &bull; American International University-Bangladesh (AIUB)</p>
-        <p style="margin-top: 0.5rem; font-size: 0.8rem;">Developed with HTML5, CSS3, JavaScript, PHP & MySQL (MVC Architecture)</p>
-    </div>
-</footer>
-
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

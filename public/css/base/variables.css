@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #4f46e5; /* Indigo 600 */
+  --primary-hover: #4338ca;
+  --bg-color: #f8fafc; /* Slate 50 */
+  --text-color: #1e293b; /* Slate 800 */
+  --text-muted: #64748b; /* Slate 500 */
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --border-color: #e2e8f0;
+  
+  --lost-color: #ef4444; /* Red */
+  --found-color: #10b981; /* Green */
+}
