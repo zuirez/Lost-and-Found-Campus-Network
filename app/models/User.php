@@ -119,4 +119,46 @@ class User {
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+
+    // ── Admin methods ──────────────────────────────────────────
+
+    // Get all users (for admin Users page)
+    public function getAllUsers() {
+        $sql = "SELECT * FROM users ORDER BY created_at DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    // Count total users
+    public function countUsers() {
+        $stmt = $this->db->query("SELECT COUNT(*) FROM users");
+        return (int) $stmt->fetchColumn();
+    }
+
+    // Get most recently registered users
+    public function getRecentUsers($limit = 5) {
+        $sql = "SELECT * FROM users ORDER BY created_at DESC LIMIT :limit";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    // Delete a user by ID
+    public function deleteUser($id) {
+        $sql = "DELETE FROM users WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
+    // Update a user's role
+    public function updateUserRole($id, $role) {
+        $sql = "UPDATE users SET role = :role WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':role', $role);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
 }
