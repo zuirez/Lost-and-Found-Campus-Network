@@ -39,17 +39,25 @@
                         <a href="<?= BASE_URL ?>/posts/create" class="btn btn-primary">
                             <i class="ph-bold ph-plus"></i> Post Item
                         </a>
-                        <a href="<?= BASE_URL ?>/profile" style="margin-left: 12px; font-weight: 600; color: var(--text-light); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s;" onmouseover="this.style.color='var(--primary-light)'" onmouseout="this.style.color='var(--text-light)'">
-                            <?php if(!empty($_SESSION['profile_picture'])) : ?>
-                                <img src="<?= BASE_URL . $_SESSION['profile_picture'] ?>" alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color);">
-                            <?php else : ?>
-                                <i class="ph-fill ph-user-circle" style="font-size: 1.3rem;"></i>
-                            <?php endif; ?>
-                            <?= htmlspecialchars($_SESSION['user_name']); ?>
-                        </a>
-                        <a href="<?= BASE_URL ?>/logout" class="btn btn-outline" style="margin-left: 10px;">
-                            <i class="ph-bold ph-sign-out"></i> Logout
-                        </a>
+                        <div class="nav-user-dropdown">
+                            <div class="nav-user-toggle">
+                                <?php if(!empty($_SESSION['profile_picture'])) : ?>
+                                    <img src="<?= BASE_URL . $_SESSION['profile_picture'] ?>" alt="Avatar" class="nav-user-avatar">
+                                <?php else : ?>
+                                    <i class="ph-fill ph-user-circle nav-user-icon"></i>
+                                <?php endif; ?>
+                                <span class="nav-user-name"><?= htmlspecialchars($_SESSION['user_name']); ?></span>
+                                <i class="ph-bold ph-caret-down"></i>
+                            </div>
+                            <div class="nav-dropdown-menu">
+                                <a href="<?= BASE_URL ?>/profile" class="dropdown-item">
+                                    <i class="ph-bold ph-user"></i> My Profile
+                                </a>
+                                <a href="<?= BASE_URL ?>/logout" class="dropdown-item text-danger">
+                                    <i class="ph-bold ph-sign-out"></i> Logout
+                                </a>
+                            </div>
+                        </div>
                     <?php else : ?>
                         <a href="<?= BASE_URL ?>/login" class="btn btn-outline">
                             <i class="ph-bold ph-sign-in"></i> Login
