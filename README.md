@@ -80,7 +80,9 @@ Built entirely from scratch — no CSS frameworks, no boilerplate — using a cu
 Lost-and-Found-Campus-Network/
 ├── .htaccess                    # Clean URL rewriting rules
 ├── index.php                    # Front Controller & Router
-├── setup_db.php                 # Database schema installer
+├── scripts/
+│   ├── setup_db.php             # Database schema installer
+│   └── test_db.php              # Database connection tester
 ├── config/
 │   ├── config.example.php       # Template for local config
 │   ├── config.php               # DB credentials (gitignored)
@@ -121,9 +123,10 @@ Lost-and-Found-Campus-Network/
 
 ### Prerequisites
 - **PHP 8.0+**
-- **XAMPP / WAMP** (Apache with `mod_rewrite` enabled)
+- **XAMPP** (Apache + MySQL with `mod_rewrite` enabled)
 - **Git**
-- An **Aiven Cloud** account (free tier) for MySQL
+
+---
 
 ### Step 1 — Clone the Repository
 ```bash
@@ -132,28 +135,108 @@ git clone https://github.com/zuirez/Lost-and-Found-Campus-Network.git
 cd Lost-and-Found-Campus-Network
 ```
 
-### Step 2 — Configure the Database
-1. Log into [Aiven Console](https://console.aiven.io) and provision a free MySQL instance.
-2. Copy the connection details (**Host**, **Port**, **User**, **Password**, **Database name**).
-3. Copy the config template and fill in your credentials:
-   ```bash
-   cp config/config.example.php config/config.php
-   ```
-4. Download the **CA Certificate** (`ca.pem`) from the Aiven connection dashboard and place it in `config/ca.pem`.
+---
 
-### Step 3 — Run the DB Schema Installer
+### Step 2 — Configure the Database (`config/config.php`)
+
+Copy the example config and set your local credentials:
 ```bash
-php setup_db.php
+cp config/config.example.php config/config.php
 ```
-This creates the `users`, `posts`, and `comments` tables with the full schema.
 
-### Step 4 — Start Apache & Open the App
-Start Apache from the XAMPP Control Panel, then navigate to:
+Then open `config/config.php` and update it for **local XAMPP**:
+```php
+<?php
+
+// XAMPP Localhost
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASS', '');           // Default XAMPP has no password
+define('DB_NAME', 'lost_and_found');
+define('DB_PORT', '3306');
+```
+
+> **Note:** `config/config.php` is gitignored — it will never be committed. Each developer maintains their own local copy.
+
+---
+
+### Step 3 — Create the Database
+
+The database itself must be created manually before running the schema installer. Choose one of the two methods below:
+
+**Option A — Via phpMyAdmin (GUI):**
+1. Open `http://localhost/phpmyadmin`
+2. Click **New** in the left sidebar
+3. Enter `lost_and_found` as the database name
+4. Set collation to `utf8mb4_unicode_ci`
+5. Click **Create**
+
+**Option B — Via MySQL CLI:**
+```bash
+C:/xampp/mysql/bin/mysql.exe -u root -e "CREATE DATABASE IF NOT EXISTS lost_and_found CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+```
+
+---
+
+### Step 4 — Run the Schema Installer (`scripts/setup_db.php`)
+
+This script creates all required tables (`users`, `posts`, `comments`) using `CREATE TABLE IF NOT EXISTS` — it is safe to re-run at any time.
+
+```bash
+C:/xampp/php/php.exe scripts/setup_db.php
+```
+
+**Expected output:**
+```
+Table 'users' verified/created successfully.
+Table 'posts' verified/created successfully.
+Table 'comments' verified/created successfully.
+```
+
+---
+
+### Step 5 — Test the Database Connection (`scripts/test_db.php`)
+
+Run the connection test to confirm everything is wired up correctly:
+
+```bash
+C:/xampp/php/php.exe scripts/test_db.php
+```
+
+**Expected output:**
+```
+Connection Successful!
+```
+
+If you see `Connection Failed`, double-check your credentials in `config/config.php` and ensure the `lost_and_found` database was created in Step 3.
+
+---
+
+### Step 6 — Start Apache & Open the App
+
+Start **Apache** and **MySQL** from the XAMPP Control Panel, then navigate to:
 ```
 http://localhost/Lost-and-Found-Campus-Network/
 ```
 
 > The application dynamically detects `BASE_URL` — it works regardless of the folder name.
+
+---
+
+### 🌐 Production / Remote Database (Aiven Cloud)
+
+To use a remote MySQL instance (e.g., Aiven free tier) instead of localhost, update `config/config.php` with your remote credentials:
+
+```php
+<?php
+define('DB_HOST', 'your-host.aivencloud.com');
+define('DB_USER', 'your_username');
+define('DB_PASS', 'your_password');
+define('DB_NAME', 'your_database_name');
+define('DB_PORT', '3306');
+```
+
+Download the **CA Certificate** (`ca.pem`) from the Aiven connection dashboard and place it at `config/ca.pem` for SSL enforcement.
 
 ---
 

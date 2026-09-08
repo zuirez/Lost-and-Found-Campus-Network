@@ -18,7 +18,7 @@
     <nav class="navbar">
         <div class="navbar-container">
             <a href="<?= BASE_URL ?>/" class="navbar-brand">
-                <img src="<?= BASE_URL ?>/public/img/logo.png" alt="Lost & Found AIUB" style="height: 55px; width: auto; display: block;">
+                <img src="<?= BASE_URL ?>/public/img/logo.png" alt="Lost & Found AIUB" style="height: 80px; width: auto; display: block;">
             </a>
 
             <div class="navbar-nav">
