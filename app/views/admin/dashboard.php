@@ -9,7 +9,7 @@ require_once APP_ROOT . '/app/views/admin/layout_header.php';
 
 <!-- Page Header -->
 <div class="admin-page-header">
-    <h2>Welcome back, <?= htmlspecialchars(explode(' ', $_SESSION['user_name'])[0]) ?> 👋</h2>
+    <h2>Welcome back, <span style="color: var(--primary-color);"><?= htmlspecialchars($_SESSION['user_name']) ?></span></h2>
     <p>Here's what's happening on the campus network today.</p>
 </div>
 
