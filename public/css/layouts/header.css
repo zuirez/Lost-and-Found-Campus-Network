@@ -118,52 +118,12 @@
   }
 }
 
-/* ── Admin nav link ── */
+/* Admin nav link */
 .nav-link-admin {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
+  color: var(--primary-color) !important;
   font-weight: 700 !important;
-  font-size: 0.95rem;
-  padding: 0.2rem 0.65rem;
-  border-radius: 20px;
-  text-decoration: none;
-  position: relative;
-  background: linear-gradient(90deg, #4f46e5, #8b5cf6, #ec4899, #8b5cf6, #4f46e5);
-  background-size: 300% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: adminGradientShift 4s linear infinite;
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.nav-link-admin::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  background: linear-gradient(90deg, #4f46e5, #8b5cf6, #ec4899, #8b5cf6, #4f46e5);
-  background-size: 300% auto;
-  animation: adminGradientShift 4s linear infinite;
-  opacity: 0.15;
-  transition: opacity 0.25s ease;
-}
-
-.nav-link-admin::after {
-  display: none;
-}
-
-.nav-link-admin:hover::before {
-  opacity: 0.25;
 }
 
 .nav-link-admin:hover {
-  transform: translateY(-1px);
-  filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.6));
-}
-
-@keyframes adminGradientShift {
-  0%   { background-position: 0% center; }
-  100% { background-position: 300% center; }
+  color: var(--primary-hover) !important;
 }
