@@ -108,8 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     card.style.display = 'none';
                 }
             });
-
-            // Handle empty state manually if needed, but keeping it simple for now.
         });
     }
 });

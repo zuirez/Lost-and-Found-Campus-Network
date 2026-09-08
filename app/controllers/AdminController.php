@@ -12,7 +12,7 @@ class AdminController {
         $this->postModel = new Post();
     }
 
-    // ── Guard: admin/security only ──────────────────────────────
+    // Guard: admin/security only 
     private function requireAdmin() {
         requireAuth();
         $allowed = ['admin', 'security'];
@@ -23,7 +23,7 @@ class AdminController {
         }
     }
 
-    // ── Dashboard ───────────────────────────────────────────────
+    // Dashboard 
     public function index() {
         $this->requireAdmin();
 
@@ -41,7 +41,7 @@ class AdminController {
         require_once APP_ROOT . '/app/views/admin/dashboard.php';
     }
 
-    // ── Users List ──────────────────────────────────────────────
+    // Users List 
     public function users() {
         $this->requireAdmin();
 
@@ -52,7 +52,7 @@ class AdminController {
         require_once APP_ROOT . '/app/views/admin/users.php';
     }
 
-    // ── Delete User ─────────────────────────────────────────────
+    // Delete User 
     public function delete_user($id) {
         $this->requireAdmin();
 
@@ -72,7 +72,7 @@ class AdminController {
         header('location: ' . BASE_URL . '/admin/users');
     }
 
-    // ── Update User Role ────────────────────────────────────────
+    // Update User Role 
     public function update_role($id) {
         $this->requireAdmin();
 
@@ -96,7 +96,7 @@ class AdminController {
         header('location: ' . BASE_URL . '/admin/users');
     }
 
-    // ── Posts List ──────────────────────────────────────────────
+    // Posts List 
     public function posts() {
         $this->requireAdmin();
 
@@ -107,7 +107,7 @@ class AdminController {
         require_once APP_ROOT . '/app/views/admin/posts.php';
     }
 
-    // ── Delete Post (admin) ─────────────────────────────────────
+    // Delete Post (admin) 
     public function delete_post($id) {
         $this->requireAdmin();
 
@@ -125,7 +125,7 @@ class AdminController {
         header('location: ' . BASE_URL . '/admin/posts');
     }
 
-    // ── Update Post Status ──────────────────────────────────────
+    // Update Post Status 
     public function update_status($id) {
         $this->requireAdmin();
 
@@ -144,7 +144,7 @@ class AdminController {
         header('location: ' . BASE_URL . '/admin/posts');
     }
 
-    // ── Settings (placeholder) ──────────────────────────────────
+    // Settings (placeholder) 
     public function settings() {
         $this->requireAdmin();
         require_once APP_ROOT . '/app/views/admin/settings.php';

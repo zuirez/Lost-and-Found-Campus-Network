@@ -1,9 +1,5 @@
 <?php
 session_start();
-
-// Flash message helper
-// EXAMPLE - flash('register_success', 'You are now registered and can log in', 'success');
-// DISPLAY IN VIEW - echo flash('register_success');
 function flash($name = '', $message = '', $type = 'success') {
     if (!empty($name)) {
         if (!empty($message) && empty($_SESSION[$name])) {

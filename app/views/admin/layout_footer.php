@@ -1,9 +1,8 @@
-        </div><!-- /.admin-content -->
-    </div><!-- /.admin-main -->
-</div><!-- /.admin-wrapper -->
+        </div>
+    </div>
+</div>
 
 <script>
-    // Mobile sidebar toggle
     const toggleBtn  = document.getElementById('adminToggle');
     const sidebar    = document.getElementById('adminSidebar');
     const overlay    = document.getElementById('adminOverlay');

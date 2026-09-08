@@ -1,11 +1,4 @@
 <?php
-/**
- * Admin Panel Layout Header
- * Replaces the main site header for all /admin pages.
- * Usage: require_once APP_ROOT . '/app/views/admin/layout_header.php';
- */
-
-// Determine active sidebar item from $admin_page variable set by controller
 $admin_page = $admin_page ?? 'dashboard';
 ?>
 <!DOCTYPE html>
@@ -27,7 +20,7 @@ $admin_page = $admin_page ?? 'dashboard';
 
 <div class="admin-wrapper">
 
-    <!-- ======= Sidebar ======= -->
+    <!-- Sidebar -->
     <aside class="admin-sidebar" id="adminSidebar">
 
         <!-- Brand -->
@@ -95,7 +88,7 @@ $admin_page = $admin_page ?? 'dashboard';
         </div>
     </aside>
 
-    <!-- ======= Main Area ======= -->
+    <!-- Main Area -->
     <div class="admin-main">
 
         <!-- Top Bar -->
@@ -135,5 +128,4 @@ $admin_page = $admin_page ?? 'dashboard';
             </div>
         </header>
 
-        <!-- Page Content starts here (controller's view is included after this) -->
         <div class="admin-content">

@@ -1,9 +1,4 @@
 <?php
-/**
- * Admin Dashboard View
- * $data keys: stats (total_users, total_posts, lost_posts, found_posts),
- *             recent_posts, recent_users
- */
 $title      = 'Dashboard';
 $admin_page = 'dashboard';
 require_once APP_ROOT . '/app/views/admin/layout_header.php';
