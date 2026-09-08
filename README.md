@@ -299,6 +299,7 @@ Cache busting is handled by appending `?v=<?= time() ?>` to the stylesheet link 
 | Route | Method | Controller | Action |
 | :--- | :---: | :--- | :--- |
 | `/` | GET | PostsController | Show all posts feed |
+| `/about` | GET | — | Show About page |
 | `/posts/lost` | GET | PostsController | Filter Lost posts |
 | `/posts/found` | GET | PostsController | Filter Found posts |
 | `/posts/create` | GET/POST | PostsController | Create new post |

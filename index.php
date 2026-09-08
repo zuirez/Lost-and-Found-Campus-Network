@@ -43,6 +43,9 @@ switch ($page) {
         $auth = new AuthController();
         $auth->logout();
         break;
+    case 'about':
+        require_once APP_ROOT . '/app/views/about.php';
+        break;
     case 'posts':
         require_once APP_ROOT . '/app/controllers/PostsController.php';
         $posts = new PostsController();
