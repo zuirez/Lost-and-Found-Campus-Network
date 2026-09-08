@@ -144,9 +144,39 @@ class AdminController {
         header('location: ' . BASE_URL . '/admin/posts');
     }
 
-    // Settings (placeholder) 
+    // Settings page
     public function settings() {
         $this->requireAdmin();
+
+        $data = [
+            'stats' => [
+                'total_users'     => $this->userModel->countUsers(),
+                'total_posts'     => $this->postModel->countPosts(),
+                'active_posts'    => $this->postModel->countPostsByStatus('active'),
+                'resolved_posts'  => $this->postModel->countPostsByStatus('resolved'),
+                'closed_posts'    => $this->postModel->countPostsByStatus('closed'),
+            ],
+            'admin' => $this->userModel->getUserById($_SESSION['user_id']),
+        ];
+
         require_once APP_ROOT . '/app/views/admin/settings.php';
+    }
+
+    // Danger Zone: purge all closed posts
+    public function purge_closed() {
+        $this->requireAdmin();
+
+        $db   = Database::getInstance()->getConnection();
+        $stmt = $db->query("SELECT image_path FROM posts WHERE status = 'closed'");
+        $rows = $stmt->fetchAll(PDO::FETCH_OBJ);
+        foreach ($rows as $row) {
+            if ($row->image_path && file_exists(APP_ROOT . $row->image_path)) {
+                unlink(APP_ROOT . $row->image_path);
+            }
+        }
+
+        $deleted = $db->exec("DELETE FROM posts WHERE status = 'closed'");
+        flash('admin_message', "Purged {$deleted} closed post(s) successfully.", 'success');
+        header('location: ' . BASE_URL . '/admin/settings');
     }
 }

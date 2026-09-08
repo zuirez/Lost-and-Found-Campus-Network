@@ -13,7 +13,7 @@ require_once APP_ROOT . '/app/views/admin/layout_header.php';
     <p>Here's what's happening on the campus network today.</p>
 </div>
 
-<!-- ── Stat Cards ── -->
+<!-- Stat Cards -->
 <div class="admin-stats-grid">
 
     <div class="admin-stat-card stat-primary">
@@ -58,7 +58,7 @@ require_once APP_ROOT . '/app/views/admin/layout_header.php';
 
 </div>
 
-<!-- ── Recent Posts + Recent Users ── -->
+<!-- Recent Posts + Recent Users -->
 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.25rem;">
 
     <!-- Recent Posts -->

@@ -129,6 +129,15 @@ class Post {
         return (int) $stmt->fetchColumn();
     }
 
+    // Count posts by status (active / resolved / closed)
+    public function countPostsByStatus($status) {
+        $sql = "SELECT COUNT(*) FROM posts WHERE status = :status";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':status', $status);
+        $stmt->execute();
+        return (int) $stmt->fetchColumn();
+    }
+
     // Get most recent posts (with user name)
     public function getRecentPosts($limit = 5) {
         $sql = "SELECT posts.*, users.name, users.student_id
