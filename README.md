@@ -51,12 +51,22 @@ Built entirely from scratch — no CSS frameworks, no boilerplate — using a cu
 - Profile photo stored at `uploads/profile/{student_id}/filename`
 - Avatar displayed in the **navbar** next to the user's name
 
+### 🛡️ Admin Panel (`/admin`)
+- Role-protected dashboard accessible only to `admin` / `security` accounts
+- **Sidebar layout** with Dashboard, Users, Posts, Settings nav items
+- **Dashboard** — live stat cards (Total Posts, Lost, Found, Users) + recent activity tables
+- **Users** — list all users, change roles inline (Student / Admin / Security), delete users
+- **Posts** — list all posts, update status inline (Active / Resolved / Closed), delete any post
+- **Settings** — platform overview stats, admin account quick-links, quick action grid, **Danger Zone** (purge closed posts)
+- Admin link appears in the navbar with an **animated gradient color** for admin-role users only
+
 ### 🎨 Premium UI/UX
 - Full **glassmorphism dark mode** design
 - Smooth micro-animations and hover effects throughout
 - **Phosphor Icons** and **Google Fonts (Inter)** for premium typography
 - Responsive layout aligned to a `1200px` content container matching the navbar
 - **SweetAlert2** for every popup, confirmation, and notification
+- Custom **404 Page** with animated gradient digits and spinning search icon
 
 ---
 
@@ -82,28 +92,32 @@ Lost-and-Found-Campus-Network/
 ├── index.php                    # Front Controller & Router
 ├── scripts/
 │   ├── setup_db.php             # Database schema installer
-│   └── test_db.php              # Database connection tester
+│   ├── test_db.php              # Database connection tester
+│   └── make_admin.php           # One-off script to promote a user to admin
 ├── config/
 │   ├── config.example.php       # Template for local config
-│   ├── config.php               # DB credentials (gitignored)
-│   └── ca.pem                   # Aiven SSL certificate (gitignored)
+│   └── config.php               # DB credentials (gitignored)
 ├── app/
 │   ├── helpers/
 │   │   └── session_helper.php   # flash(), requireAuth(), SweetAlert guards
 │   ├── models/
-│   │   ├── Database.php         # PDO Singleton with SSL/TLS enforcement
-│   │   ├── User.php             # Register, login, profile, password management
-│   │   ├── Post.php             # CRUD for lost/found posts
+│   │   ├── Database.php         # PDO Singleton
+│   │   ├── User.php             # Register, login, profile, admin user management
+│   │   ├── Post.php             # CRUD for lost/found posts + admin methods
 │   │   └── Comment.php          # CRUD for comments
 │   ├── controllers/
 │   │   ├── AuthController.php   # Login, register, logout, session creation
 │   │   ├── PostsController.php  # Feed, post creation, comments
-│   │   └── ProfileController.php# Profile dashboard, edit/delete posts, photo upload
+│   │   ├── ProfileController.php# Profile dashboard, edit/delete posts, photo upload
+│   │   └── AdminController.php  # Admin panel — users, posts, settings, purge
 │   └── views/
 │       ├── layouts/             # header.php, footer.php (shared across all pages)
 │       ├── auth/                # login.php, register.php
 │       ├── posts/               # index.php, create.php, show.php
-│       └── profile/             # index.php (tabbed), edit_post.php
+│       ├── profile/             # index.php (tabbed), edit_post.php
+│       ├── admin/               # layout_header.php, layout_footer.php,
+│       │                        #   dashboard.php, users.php, posts.php, settings.php
+│       └── errors/              # 404.php
 └── public/
     ├── uploads/                 # All user uploads (gitignored)
     │   ├── Lost/{student_id}/   # Lost item images
@@ -113,7 +127,7 @@ Lost-and-Found-Campus-Network/
         ├── style.css            # Master @import manifest
         ├── base/                # variables.css, global.css
         ├── components/          # buttons.css, cards.css
-        ├── layouts/             # header.css, footer.css
+        ├── layouts/             # header.css, footer.css, admin.css
         └── pages/               # home.css, auth.css
 ```
 
@@ -223,6 +237,24 @@ http://localhost/Lost-and-Found-Campus-Network/
 
 ---
 
+### Step 7 — Promote a User to Admin
+
+After registering an account, promote it to `admin` role using the helper script:
+
+```bash
+# Edit scripts/make_admin.php and set the target email, then run:
+C:/xampp/php/php.exe scripts/make_admin.php
+```
+
+**Expected output:**
+```
+Success: 'your@email.com' is now an admin.
+```
+
+Once promoted, log out and back in — the **Admin** link will appear in the navbar and `/admin` will be accessible.
+
+---
+
 ### 🌐 Production / Remote Database (Aiven Cloud)
 
 To use a remote MySQL instance (e.g., Aiven free tier) instead of localhost, update `config/config.php` with your remote credentials:
@@ -250,8 +282,9 @@ The entire UI is built on a bespoke CSS architecture with no external framework 
 | `global.css` | Reset, base typography, scroll behavior |
 | `buttons.css` | All button variants (`.btn-primary`, `.btn-outline`) |
 | `cards.css` | Item card grid, badge styles, card metadata |
-| `header.css` | Sticky navbar, mobile toggle, brand styles |
+| `header.css` | Sticky navbar, mobile toggle, brand styles, admin gradient nav link |
 | `footer.css` | Multi-column footer grid |
+| `admin.css` | Admin panel sidebar, topbar, stat cards, tables, badges, action buttons |
 | `auth.css` | Glassmorphism auth cards, input wrappers with icons |
 | `home.css` | Hero section, quick stats, section headers |
 
@@ -260,6 +293,8 @@ Cache busting is handled by appending `?v=<?= time() ?>` to the stylesheet link 
 ---
 
 ## 🗺️ URL Route Map
+
+### Public & User Routes
 
 | Route | Method | Controller | Action |
 | :--- | :---: | :--- | :--- |
@@ -279,6 +314,21 @@ Cache busting is handled by appending `?v=<?= time() ?>` to the stylesheet link 
 | `/profile/edit_post/{id}` | GET/POST | ProfileController | Edit own post |
 | `/profile/delete_post/{id}` | GET | ProfileController | Delete own post |
 | `/profile/update_photo` | POST | ProfileController | Change profile picture |
+| `/*` | ANY | — | 404 Page Not Found |
+
+### Admin Routes *(requires `admin` or `security` role)*
+
+| Route | Method | Controller | Action |
+| :--- | :---: | :--- | :--- |
+| `/admin` | GET | AdminController | Dashboard (stats + recent activity) |
+| `/admin/users` | GET | AdminController | List all users |
+| `/admin/update_role/{id}` | POST | AdminController | Change a user's role |
+| `/admin/delete_user/{id}` | GET | AdminController | Delete a user |
+| `/admin/posts` | GET | AdminController | List all posts |
+| `/admin/update_status/{id}` | POST | AdminController | Update post status |
+| `/admin/delete_post/{id}` | GET | AdminController | Delete any post |
+| `/admin/settings` | GET | AdminController | Settings page |
+| `/admin/purge_closed` | GET | AdminController | Delete all closed posts |
 
 ---
 
