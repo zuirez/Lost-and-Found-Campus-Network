@@ -110,3 +110,13 @@
   align-items: center;
   gap: 0.35rem;
 }
+
+@media (max-width: 480px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .card-body {
+    padding: 1.25rem;
+  }
+}

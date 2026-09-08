@@ -396,6 +396,12 @@
 }
 
 /* ---- Admin Cards / Tables ---- */
+.admin-two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
 .admin-card {
     background: #fff;
     border: 1px solid var(--border-color);
@@ -602,10 +608,34 @@
     .admin-stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .admin-two-cols {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 480px) {
     .admin-stats-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-topbar-user .user-info {
+        display: none;
+    }
+    .admin-topbar-user {
+        padding: 0.2rem;
+        border: none;
+        background: transparent;
+    }
+    .admin-topbar-left h1 {
+        font-size: 0.95rem;
+    }
+    .admin-breadcrumb {
+        display: none;
+    }
+    .admin-table th, .admin-table td {
+        white-space: nowrap;
     }
 }

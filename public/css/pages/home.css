@@ -141,3 +141,37 @@
   font-size: 0.95rem;
   margin-top: 0.25rem;
 }
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 3rem 1rem 2rem;
+  }
+  .hero-title {
+    font-size: 2.1rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+  .quick-stats {
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .search-input {
+    padding: 0.9rem 1rem;
+  }
+  .search-btn {
+    padding: 0 1.25rem;
+  }
+  .category-filters {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 0.5rem;
+    justify-content: flex-start;
+  }
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}

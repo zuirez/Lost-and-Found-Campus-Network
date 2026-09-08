@@ -21,48 +21,67 @@
                 <img src="<?= BASE_URL ?>/public/img/logo.png" alt="Lost & Found AIUB" style="height: 80px; width: auto; display: block;">
             </a>
 
-            <div class="navbar-nav">
-                <a href="<?= BASE_URL ?>/" class="nav-link active">Home</a>
-                <a href="<?= BASE_URL ?>/posts/lost" class="nav-link">Lost</a>
-                <a href="<?= BASE_URL ?>/posts/found" class="nav-link">Found</a>
-                <a href="<?= BASE_URL ?>/about" class="nav-link">About</a>
-                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                <a href="<?= BASE_URL ?>/admin" class="nav-link nav-link-admin">
-                    <i class="ph-bold ph-shield-check"></i> Admin
-                </a>
-                <?php endif; ?>
-            </div>
+            <div class="navbar-menu" id="navbarMenu">
+                <div class="navbar-nav">
+                    <a href="<?= BASE_URL ?>/" class="nav-link active">Home</a>
+                    <a href="<?= BASE_URL ?>/posts/lost" class="nav-link">Lost</a>
+                    <a href="<?= BASE_URL ?>/posts/found" class="nav-link">Found</a>
+                    <a href="<?= BASE_URL ?>/about" class="nav-link">About</a>
+                    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+                    <a href="<?= BASE_URL ?>/admin" class="nav-link nav-link-admin">
+                        <i class="ph-bold ph-shield-check"></i> Admin
+                    </a>
+                    <?php endif; ?>
+                </div>
 
-            <div class="navbar-actions">
-                <?php if(isset($_SESSION['user_id'])) : ?>
-                    <a href="<?= BASE_URL ?>/posts/create" class="btn btn-primary">
-                        <i class="ph-bold ph-plus"></i> Post Item
-                    </a>
-                    <a href="<?= BASE_URL ?>/profile" style="margin-left: 12px; font-weight: 600; color: var(--text-light); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s;" onmouseover="this.style.color='var(--primary-light)'" onmouseout="this.style.color='var(--text-light)'">
-                        <?php if(!empty($_SESSION['profile_picture'])) : ?>
-                            <img src="<?= BASE_URL . $_SESSION['profile_picture'] ?>" alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color);">
-                        <?php else : ?>
-                            <i class="ph-fill ph-user-circle" style="font-size: 1.3rem;"></i>
-                        <?php endif; ?>
-                        <?= htmlspecialchars($_SESSION['user_name']); ?>
-                    </a>
-                    <a href="<?= BASE_URL ?>/logout" class="btn btn-outline" style="margin-left: 10px;">
-                        <i class="ph-bold ph-sign-out"></i> Logout
-                    </a>
-                <?php else : ?>
-                    <a href="<?= BASE_URL ?>/login" class="btn btn-outline">
-                        <i class="ph-bold ph-sign-in"></i> Login
-                    </a>
-                    <a href="<?= BASE_URL ?>/posts/create" class="btn btn-primary">
-                        <i class="ph-bold ph-plus"></i> Post Item
-                    </a>
-                <?php endif; ?>
-                
-                <button class="mobile-toggle" aria-label="Toggle Menu">
-                    <i class="ph-bold ph-list"></i>
-                </button>
+                <div class="navbar-actions">
+                    <?php if(isset($_SESSION['user_id'])) : ?>
+                        <a href="<?= BASE_URL ?>/posts/create" class="btn btn-primary">
+                            <i class="ph-bold ph-plus"></i> Post Item
+                        </a>
+                        <a href="<?= BASE_URL ?>/profile" style="margin-left: 12px; font-weight: 600; color: var(--text-light); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s;" onmouseover="this.style.color='var(--primary-light)'" onmouseout="this.style.color='var(--text-light)'">
+                            <?php if(!empty($_SESSION['profile_picture'])) : ?>
+                                <img src="<?= BASE_URL . $_SESSION['profile_picture'] ?>" alt="Avatar" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color);">
+                            <?php else : ?>
+                                <i class="ph-fill ph-user-circle" style="font-size: 1.3rem;"></i>
+                            <?php endif; ?>
+                            <?= htmlspecialchars($_SESSION['user_name']); ?>
+                        </a>
+                        <a href="<?= BASE_URL ?>/logout" class="btn btn-outline" style="margin-left: 10px;">
+                            <i class="ph-bold ph-sign-out"></i> Logout
+                        </a>
+                    <?php else : ?>
+                        <a href="<?= BASE_URL ?>/login" class="btn btn-outline">
+                            <i class="ph-bold ph-sign-in"></i> Login
+                        </a>
+                        <a href="<?= BASE_URL ?>/posts/create" class="btn btn-primary">
+                            <i class="ph-bold ph-plus"></i> Post Item
+                        </a>
+                    <?php endif; ?>
+                </div>
             </div>
+            
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Menu">
+                <i class="ph-bold ph-list"></i>
+            </button>
         </div>
     </nav>
+
+    <script>
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navbarMenu = document.getElementById('navbarMenu');
+        
+        mobileToggle.addEventListener('click', () => {
+            navbarMenu.classList.toggle('menu-open');
+            const icon = mobileToggle.querySelector('i');
+            if(navbarMenu.classList.contains('menu-open')) {
+                icon.classList.remove('ph-list');
+                icon.classList.add('ph-x');
+            } else {
+                icon.classList.remove('ph-x');
+                icon.classList.add('ph-list');
+            }
+        });
+    </script>
 
     <main class="main-content">

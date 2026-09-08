@@ -59,7 +59,7 @@ require_once APP_ROOT . '/app/views/admin/layout_header.php';
 </div>
 
 <!-- Recent Posts + Recent Users -->
-<div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.25rem;">
+<div class="admin-two-cols">
 
     <!-- Recent Posts -->
     <div class="admin-card">

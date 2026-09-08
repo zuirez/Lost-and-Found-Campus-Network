@@ -3,6 +3,35 @@ $title = htmlspecialchars($data['post']->title) . " - AIUB Lost & Found";
 require_once APP_ROOT . '/app/views/layouts/header.php';
 ?>
 
+<style>
+.post-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+.post-image-container {
+    width: 100%;
+    height: 350px;
+    background: #000;
+}
+@media (max-width: 640px) {
+    .post-header-flex {
+        flex-direction: column;
+    }
+    .post-header-flex > div:last-child {
+        text-align: left !important;
+    }
+    .post-image-container {
+        height: 250px;
+    }
+    .main-content {
+        padding: 1.5rem 1rem !important;
+    }
+}
+</style>
+
 <main class="main-content" style="padding: 2rem 5%; min-height: 80vh;">
     
     <?php flash('post_message'); ?>
@@ -13,13 +42,13 @@ require_once APP_ROOT . '/app/views/layouts/header.php';
         <div class="auth-card" style="padding: 0; overflow: hidden; max-width: 100%;">
             
             <?php if($data['post']->image_path) : ?>
-                <div style="width: 100%; height: 350px; background: #000;">
+                <div class="post-image-container">
                     <img src="<?= BASE_URL . $data['post']->image_path ?>" alt="Item Image" style="width: 100%; height: 100%; object-fit: contain;">
                 </div>
             <?php endif; ?>
             
             <div style="padding: 2rem;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                <div class="post-header-flex">
                     <div>
                         <span class="badge badge-<?= strtolower($data['post']->type) ?>" style="margin-bottom: 0.5rem; display: inline-block;"><?= $data['post']->type ?></span>
                         <div class="card-category" style="margin-bottom: 0.5rem;"><?= htmlspecialchars($data['post']->category) ?></div>

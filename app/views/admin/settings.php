@@ -11,7 +11,7 @@ require_once APP_ROOT . '/app/views/admin/layout_header.php';
     <p>Platform configuration, stats overview, and maintenance tools.</p>
 </div>
 
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+<div class="admin-two-cols" style="margin-bottom: 1.5rem;">
 
     <!-- Platform Overview -->
     <div class="admin-card">

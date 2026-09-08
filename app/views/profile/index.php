@@ -127,7 +127,7 @@ $posts = $data['posts'];
             </div>
             <div class="auth-card" style="max-width: 100%; padding: 2rem;">
                 <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Account Information</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div class="profile-info-grid">
                     <div>
                         <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; letter-spacing: 0.05em;"><i class="ph ph-user"></i> Full Name</div>
                         <div style="font-size: 1.1rem; font-weight: 600; color: var(--text-light);"><?= htmlspecialchars($user->name) ?></div>
@@ -209,10 +209,16 @@ $posts = $data['posts'];
     color: var(--primary-light);
     border-bottom-color: var(--primary-color);
 }
+.profile-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
 @media (max-width: 600px) {
     .profile-tab { padding: 0.6rem 0.8rem; font-size: 0.8rem; }
+    .profile-info-grid { grid-template-columns: 1fr; }
+    .auth-card { padding: 1.25rem !important; }
 }
-</style>
 
 <script>
 function confirmDeletePost(id, title) {

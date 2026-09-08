@@ -199,3 +199,12 @@
         transform: translateY(0);
     }
 }
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 1.5rem;
+    }
+    .auth-header h1 {
+        font-size: 1.75rem;
+    }
+}
