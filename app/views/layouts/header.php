@@ -26,6 +26,11 @@
                 <a href="<?= BASE_URL ?>/posts/lost" class="nav-link">Lost</a>
                 <a href="<?= BASE_URL ?>/posts/found" class="nav-link">Found</a>
                 <a href="<?= BASE_URL ?>/about" class="nav-link">About</a>
+                <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
+                <a href="<?= BASE_URL ?>/admin" class="nav-link nav-link-admin">
+                    <i class="ph-bold ph-shield-check"></i> Admin
+                </a>
+                <?php endif; ?>
             </div>
 
             <div class="navbar-actions">
