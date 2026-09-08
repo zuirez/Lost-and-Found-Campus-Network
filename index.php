@@ -56,7 +56,8 @@ switch ($page) {
                 $posts->$method();
             }
         } else {
-            $posts->index();
+            http_response_code(404);
+            require_once APP_ROOT . '/app/views/errors/404.php';
         }
         break;
     case 'profile':
@@ -72,7 +73,8 @@ switch ($page) {
                 $profile->$method();
             }
         } else {
-            $profile->index();
+            http_response_code(404);
+            require_once APP_ROOT . '/app/views/errors/404.php';
         }
         break;
     case 'admin':
@@ -88,15 +90,17 @@ switch ($page) {
                 $admin->$method();
             }
         } else {
-            $admin->index();
+            http_response_code(404);
+            require_once APP_ROOT . '/app/views/errors/404.php';
         }
         break;
     case 'home':
-    default:
-        // We can route home to PostsController index if we want, or keep it separate.
-        // Let's redirect home to /posts/lost for now or create a Feed method.
         require_once APP_ROOT . '/app/controllers/PostsController.php';
         $posts = new PostsController();
         $posts->index();
+        break;
+    default:
+        http_response_code(404);
+        require_once APP_ROOT . '/app/views/errors/404.php';
         break;
 }
